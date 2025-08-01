@@ -28,3 +28,24 @@ cube-orchestrator/
 ├── LICENSE             # Project license
 └── README.md           # Project documentation
 ```
+
+## Getting third-party dependencies
+
+To manage third-party dependencies, use the Go module system. Run the following command in the project root:
+
+```bash
+go mod tidy
+
+# Core dependencies for the orchestrator
+$ go get github.com/golang-collections/collections/queue
+$ go get github.com/google/uuid
+$ go get github.com/docker/go-connections/nat
+
+# Additional useful dependencies for container orchestration
+$ go get github.com/docker/docker/api/types
+$ go get github.com/docker/docker/client
+$ go get github.com/gorilla/mux
+$ go get github.com/shirou/gopsutil/v3/cpu
+$ go get github.com/shirou/gopsutil/v3/mem
+$ go get github.com/sirupsen/logrus
+```
