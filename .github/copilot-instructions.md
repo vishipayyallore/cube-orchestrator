@@ -16,12 +16,44 @@ This is a learning project focused on building an orchestrator in Go from scratc
 
 ```
 cube-orchestrator/
-├── go.mod              # Go module definition
-├── README.md           # Project documentation
+├── .copilot/           # GitHub Copilot configuration
+│   └── settings.json   # Copilot settings for the project
+├── .github/            # GitHub configuration
+│   └── copilot-instructions.md # Copilot context and guidelines
 ├── docs/               # Documentation and images
 │   └── images/
-└── src/                # Source code directory
+├── src/                # Source code directory
+│   ├── main.go         # Main application with orchestrator demo
+│   ├── manager/        # Orchestrator manager component
+│   │   └── manager.go  # Manager implementation for task coordination
+│   ├── node/           # Node management component
+│   │   └── node.go     # Node implementation for cluster resources
+│   ├── scheduler/      # Task scheduling component
+│   │   └── scheduler.go # Scheduler implementation for task distribution
+│   ├── task/           # Task definition and management
+│   │   └── task.go     # Task and TaskEvent implementations
+│   └── worker/         # Worker node component
+│       └── worker.go   # Worker implementation for task execution
+├── go.mod              # Go module definition with dependencies
+├── LICENSE             # Project license
+└── README.md           # Project documentation
 ```
+
+## Current Implementation Status
+
+The project currently includes:
+- **Task Management**: Task and TaskEvent structures with states (Pending, Running, Completed, Failed)
+- **Worker Implementation**: Worker nodes with task queues, databases, and lifecycle management
+- **Manager Coordination**: Manager for task distribution, worker selection, and system coordination
+- **Node Resources**: Node definitions with resource specifications (CPU, memory, disk)
+- **Demo Application**: Functional main.go demonstrating all components working together
+
+## Key Dependencies
+
+- `github.com/golang-collections/collections/queue` - Queue data structure for task management
+- `github.com/google/uuid` - UUID generation for unique task and event IDs
+- `github.com/docker/go-connections/nat` - Docker networking utilities
+- Additional Docker, monitoring, and HTTP routing libraries for full orchestrator functionality
 
 ## Coding Guidelines
 
@@ -40,9 +72,13 @@ cube-orchestrator/
 
 ### Orchestrator-Specific Patterns
 - Follow event-driven architecture where appropriate
-- Implement proper state management for tasks and workers
+- Implement proper state management for tasks and workers (Pending, Running, Completed, Failed states)
 - Use goroutines and channels for concurrent operations
 - Design with scalability and fault tolerance in mind
+- Utilize queue-based task distribution patterns
+- Implement resource-aware scheduling algorithms
+- Use UUID-based identification for tasks and events
+- Maintain separation between manager, worker, and node responsibilities
 
 ### Code Organization
 - Place related functionality in appropriate packages
@@ -73,7 +109,10 @@ cube-orchestrator/
 
 When suggesting code or improvements, consider these key learning objectives:
 - Understanding container runtime interfaces
-- Implementing scheduling algorithms
-- Managing cluster state and health
-- Handling failure scenarios gracefully
+- Implementing scheduling algorithms based on resource availability
+- Managing cluster state and health monitoring
+- Handling failure scenarios gracefully (task failures, worker disconnections)
 - Building robust APIs for orchestrator control
+- Task lifecycle management (creation, scheduling, execution, completion)
+- Worker node management and resource allocation
+- Event-driven communication patterns between components
