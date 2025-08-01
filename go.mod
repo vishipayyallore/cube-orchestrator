@@ -1,4 +1,4 @@
-module cube-orchestrator
+module cubeorchestrator
 
 go 1.24.5
 

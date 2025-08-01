@@ -8,7 +8,7 @@ import (
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
 
-	"cube-orchestrator/src/task"
+	"cubeorchestrator/src/task"
 )
 
 type Worker struct {

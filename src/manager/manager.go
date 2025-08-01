@@ -3,7 +3,7 @@
 package manager
 
 import (
-	"cube-orchestrator/src/task"
+	"cubeorchestrator/src/task"
 	"fmt"
 
 	"github.com/golang-collections/collections/queue"

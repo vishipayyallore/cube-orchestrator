@@ -3,10 +3,10 @@
 package main
 
 import (
-	"cube-orchestrator/src/manager"
-	"cube-orchestrator/src/node"
-	"cube-orchestrator/src/task"
-	"cube-orchestrator/src/worker"
+	"cubeorchestrator/src/manager"
+	"cubeorchestrator/src/node"
+	"cubeorchestrator/src/task"
+	"cubeorchestrator/src/worker"
 
 	"fmt"
 	"time"
