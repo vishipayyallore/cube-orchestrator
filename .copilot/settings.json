@@ -1,0 +1,30 @@
+{
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": true,
+        "plaintext": false,
+        "markdown": true,
+        "go": true,
+        "dockerfile": true,
+        "json": true
+    },
+    "github.copilot.editor.enableAutoCompletions": true,
+    "github.copilot.chat.useProjectTemplates": true,
+    "github.copilot.chat.followUps": "on",
+    "github.copilot.inlineSuggest.enable": true,
+    "github.copilot.conversation.useInlineChat": true,
+    "github.copilot.suggest.localFileContextLength": 5000,
+    "github.copilot.advanced": {
+        "secret_key": "github-copilot-key",
+        "length": 1000,
+        "temperature": 0.1,
+        "top_p": 1,
+        "stop": [
+            "\n\n"
+        ],
+        "inlineSuggestCount": 3,
+        "listCount": 10
+    },
+    "github.copilot.preference.enableCopilotCodeLens": true,
+    "github.copilot.preference.enableCopilotSuggestionsInQuickFix": true
+}
