@@ -3,12 +3,12 @@
 package worker
 
 import (
+	"cubeorchestrator/src/task"
+
 	"fmt"
 
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
-
-	"cubeorchestrator/src/task"
 )
 
 type Worker struct {
