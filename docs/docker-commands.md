@@ -6,24 +6,58 @@ This document contains useful Docker commands and examples for working with the 
 
 To run a PostgreSQL container for development and testing:
 
+**Option 1: Run in background (recommended for development)**
+
 ```bash
-docker run -it -p 5432:5432 --name cube-orchestrator-db -e POSTGRES_USER=cube -e POSTGRES_PASSWORD=secret postgres
+docker run -d -p 5432:5432 --name cube-orchestrator-db -e POSTGRES_USER=cube -e POSTGRES_PASSWORD=secret postgres
 ```
 
-This command:
+**Option 2: Run in foreground (see logs directly)**
 
-- Runs PostgreSQL in interactive mode (`-it`)
-- Maps port 5432 from container to host (`-p 5432:5432`)
-- Names the container `cube-orchestrator-db` (`--name cube-orchestrator-db`)
-- Sets database user to `cube` (`-e POSTGRES_USER=cube`)
-- Sets database password to `secret` (`-e POSTGRES_PASSWORD=secret`)
+```bash
+docker run -p 5432:5432 --name cube-orchestrator-db -e POSTGRES_USER=cube -e POSTGRES_PASSWORD=secret postgres
+```
+
+**Option 3: Access container bash shell**
+
+```bash
+# First run the container in background
+docker run -d -p 5432:5432 --name cube-orchestrator-db -e POSTGRES_USER=cube -e POSTGRES_PASSWORD=secret postgres
+
+# Then access the bash shell
+docker exec -it cube-orchestrator-db bash
+```
+
+**Recommended approach explanation:**
+
+- `-d` runs the container in detached mode (background)
+- `-p 5432:5432` maps port 5432 from container to host
+- `--name cube-orchestrator-db` names the container
+- `-e POSTGRES_USER=cube` sets database user to `cube`
+- `-e POSTGRES_PASSWORD=secret` sets database password to `secret`
 
 ## Connecting to PostgreSQL
 
-To connect to the PostgreSQL database:
+**Option 1: Connect from host machine (requires psql client installed)**
 
 ```bash
 psql -h localhost -p 5432 -U cube
+```
+
+**Option 2: Connect from within the container**
+
+```bash
+# Access the container shell
+docker exec -it cube-orchestrator-db bash
+
+# Then connect to PostgreSQL (inside container)
+psql -U cube
+```
+
+**Option 3: Direct psql connection via docker exec**
+
+```bash
+docker exec -it cube-orchestrator-db psql -U cube
 ```
 
 ## Creating Tables in PostgreSQL
@@ -94,6 +128,42 @@ docker pull postgres
 
 # Remove PostgreSQL image
 docker rmi postgres
+```
+
+### Docker API Commands
+
+Docker provides a REST API accessible via Unix socket, useful for programmatic container management in orchestrators:
+
+```bash
+# Get container information via Docker API (replace container ID)
+curl --unix-socket \
+   /var/run/docker.sock http://docker/containers/b79998e6bd40/json | jq .
+
+# Get container information using container name
+curl --unix-socket \
+   /var/run/docker.sock http://docker/containers/cube-orchestrator-db/json | jq .
+
+# List all containers via API
+curl --unix-socket \
+   /var/run/docker.sock http://docker/containers/json | jq .
+
+# Get container stats (CPU, memory usage)
+curl --unix-socket \
+   /var/run/docker.sock http://docker/containers/cube-orchestrator-db/stats?stream=false | jq .
+
+# Get system information
+curl --unix-socket \
+   /var/run/docker.sock http://docker/info | jq .
+```
+
+**Note:** These API commands require `jq` for JSON formatting. Install with:
+
+```bash
+# Ubuntu/Debian
+sudo apt-get install jq
+
+# macOS
+brew install jq
 ```
 
 ### Docker Compose (Future Enhancement)
