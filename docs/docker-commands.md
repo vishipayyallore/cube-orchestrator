@@ -130,6 +130,42 @@ docker pull postgres
 docker rmi postgres
 ```
 
+### Docker API Commands
+
+Docker provides a REST API accessible via Unix socket, useful for programmatic container management in orchestrators:
+
+```bash
+# Get container information via Docker API (replace container ID)
+curl --unix-socket \
+   /var/run/docker.sock http://docker/containers/b79998e6bd40/json | jq .
+
+# Get container information using container name
+curl --unix-socket \
+   /var/run/docker.sock http://docker/containers/cube-orchestrator-db/json | jq .
+
+# List all containers via API
+curl --unix-socket \
+   /var/run/docker.sock http://docker/containers/json | jq .
+
+# Get container stats (CPU, memory usage)
+curl --unix-socket \
+   /var/run/docker.sock http://docker/containers/cube-orchestrator-db/stats?stream=false | jq .
+
+# Get system information
+curl --unix-socket \
+   /var/run/docker.sock http://docker/info | jq .
+```
+
+**Note:** These API commands require `jq` for JSON formatting. Install with:
+
+```bash
+# Ubuntu/Debian
+sudo apt-get install jq
+
+# macOS
+brew install jq
+```
+
 ### Docker Compose (Future Enhancement)
 
 For easier management, consider creating a `docker-compose.yml` file:
