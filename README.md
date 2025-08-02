@@ -61,6 +61,8 @@ cd src
 go run main.go
 ```
 
+![Cube Orchestrator Demo Output](docs/images/After_Ch_2.PNG)
+
 ### Docker Setup
 
 For Docker commands and container management instructions, see [Docker Commands](docs/docker-commands.md).

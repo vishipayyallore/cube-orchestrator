@@ -90,6 +90,8 @@ public | book | table | cube
 (1 row)
 ```
 
+![PostgreSQL Table Creation Example](images/Ch3_Creating_Table.PNG)
+
 ## Additional Docker Commands
 
 ### Container Management
@@ -133,6 +135,8 @@ docker rmi postgres
 ### Docker API Commands
 
 Docker provides a REST API accessible via Unix socket, useful for programmatic container management in orchestrators:
+
+![Docker API Example](images/Ch3_Docker_API.PNG)
 
 ```bash
 # Get container information via Docker API (replace container ID)
