@@ -67,6 +67,9 @@ docker ps
 # List all containers (including stopped)
 docker ps -a
 
+# Inspect container details (configuration, networks, volumes, etc.)
+docker inspect cube-orchestrator-db
+
 # Stop the PostgreSQL container
 docker stop cube-orchestrator-db
 
