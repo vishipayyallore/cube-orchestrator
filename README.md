@@ -50,38 +50,17 @@ $ go get github.com/shirou/gopsutil/v3/mem
 $ go get github.com/sirupsen/logrus
 ```
 
-## Few Docker commands
+## Getting Started
 
-To manage Docker containers and images, you can use the following commands:
+### Running the Application
 
-```bash
-docker run -it -p 5432:5432 --name cube-orchestrator -e POSTGRES_USER=cube -e POSTGRES_PASSWORD=secret postgres
-```
-
-## Creating a Table in PostgreSQL
-
-To create a table in PostgreSQL, you can use the following SQL command:
+To run the cube orchestrator demo:
 
 ```bash
-$ psql -h localhost -p 5432 -U cube
-Password for user cube:
-psql (9.6.22, server 13.2 (Debian 13.2-1.pgdg100+1))
-WARNING: psql major version 9.6, server major version 13.
-        Some psql features might not work.
-Type "help" for help.
-
-cube=# \d
-No relations found.
-cube=# CREATE TABLE book (
-isbn char(13) PRIMARY KEY,
-title varchar(240) NOT NULL,
-author varchar(140)
-);
-CREATE TABLE
-cube=# \d
-      List of relations
-Schema | Name | Type  | Owner
---------+------+-------+-------
-public | book | table | cube
-(1 row)
+cd src
+go run main.go
 ```
+
+### Docker Setup
+
+For Docker commands and container management instructions, see [Docker Commands](docs/docker-commands.md).
