@@ -49,3 +49,18 @@ $ go get github.com/shirou/gopsutil/v3/cpu
 $ go get github.com/shirou/gopsutil/v3/mem
 $ go get github.com/sirupsen/logrus
 ```
+
+## Getting Started
+
+### Running the Application
+
+To run the cube orchestrator demo:
+
+```bash
+cd src
+go run main.go
+```
+
+### Docker Setup
+
+For Docker commands and container management instructions, see [Docker Commands](docs/docker-commands.md).
