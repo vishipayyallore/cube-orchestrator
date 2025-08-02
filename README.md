@@ -49,3 +49,11 @@ $ go get github.com/shirou/gopsutil/v3/cpu
 $ go get github.com/shirou/gopsutil/v3/mem
 $ go get github.com/sirupsen/logrus
 ```
+
+## Few Docker commands
+
+To manage Docker containers and images, you can use the following commands:
+
+```bash
+docker run -it -p 5432:5432 --name cube-orchestrator -e POSTGRES_USER=cube -e POSTGRES_PASSWORD=secret postgres
+```
