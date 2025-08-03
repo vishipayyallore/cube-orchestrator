@@ -49,13 +49,16 @@ The project currently includes:
 - **Worker Implementation**: Worker nodes with task queues, databases, and lifecycle management
 - **Manager Coordination**: Manager for task distribution, worker selection, and system coordination
 - **Node Resources**: Node definitions with resource specifications (CPU, memory, disk)
-- **Demo Application**: Functional main.go demonstrating all components working together
+- **Docker Integration**: Complete Docker client functionality for container management
+- **Demo Application**: Functional main.go demonstrating all components including Docker containers
 
 ## Key Dependencies
 
 - `github.com/golang-collections/collections/queue` - Queue data structure for task management
 - `github.com/google/uuid` - UUID generation for unique task and event IDs
 - `github.com/docker/go-connections/nat` - Docker networking utilities
+- `github.com/docker/docker/client` - Docker client for container management
+- `github.com/docker/docker/api/types` - Docker API types and structures
 - Additional Docker, monitoring, and HTTP routing libraries for full orchestrator functionality
 
 ## Coding Guidelines
