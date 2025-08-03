@@ -6,19 +6,19 @@ This document contains useful Docker commands and examples for working with the 
 
 To run a PostgreSQL container for development and testing:
 
-**Option 1: Run in background (recommended for development)**
+### Option 1: Run in background (recommended for development)
 
 ```bash
 docker run -d -p 5432:5432 --name cube-orchestrator-db -e POSTGRES_USER=cube -e POSTGRES_PASSWORD=secret postgres
 ```
 
-**Option 2: Run in foreground (see logs directly)**
+### Option 2: Run in foreground (see logs directly)
 
 ```bash
 docker run -p 5432:5432 --name cube-orchestrator-db -e POSTGRES_USER=cube -e POSTGRES_PASSWORD=secret postgres
 ```
 
-**Option 3: Access container bash shell**
+### Option 3: Access container bash shell
 
 ```bash
 # First run the container in background
@@ -28,7 +28,7 @@ docker run -d -p 5432:5432 --name cube-orchestrator-db -e POSTGRES_USER=cube -e 
 docker exec -it cube-orchestrator-db bash
 ```
 
-**Recommended approach explanation:**
+### Command Parameters Explained
 
 - `-d` runs the container in detached mode (background)
 - `-p 5432:5432` maps port 5432 from container to host
@@ -38,13 +38,13 @@ docker exec -it cube-orchestrator-db bash
 
 ## Connecting to PostgreSQL
 
-**Option 1: Connect from host machine (requires psql client installed)**
+### Option 1: Connect from host machine (requires psql client installed)
 
 ```bash
 psql -h localhost -p 5432 -U cube
 ```
 
-**Option 2: Connect from within the container**
+### Option 2: Connect from within the container
 
 ```bash
 # Access the container shell
@@ -54,7 +54,7 @@ docker exec -it cube-orchestrator-db bash
 psql -U cube
 ```
 
-**Option 3: Direct psql connection via docker exec**
+### Option 3: Direct psql connection via docker exec
 
 ```bash
 docker exec -it cube-orchestrator-db psql -U cube
