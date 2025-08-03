@@ -21,7 +21,10 @@ cube-orchestrator/
 ├── .github/            # GitHub configuration
 │   └── copilot-instructions.md # Copilot context and guidelines
 ├── docs/               # Documentation and images
-│   └── images/
+│   ├── images/
+│   ├── docker-commands.md # Docker commands reference  
+│   ├── postgresql-primer.md # PostgreSQL guide
+│   └── troubleshooting.md # Common issues and solutions
 ├── src/                # Source code directory
 │   ├── main.go         # Main application with orchestrator demo
 │   ├── manager/        # Orchestrator manager component
