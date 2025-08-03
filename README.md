@@ -65,15 +65,16 @@ go get github.com/sirupsen/logrus
 
 ### Docker Client Dependencies (Troubleshooting)
 
-**Note**: The Docker client imports may cause module path conflicts. If you encounter errors like:
+**Security Update**: This project now uses Docker v28.3.3+incompatible to address security vulnerabilities:
+- ✅ **Fixed GO-2023-1699**: Docker Swarm encrypted overlay network authentication issue
+- ✅ **Fixed GO-2023-1700**: Docker Swarm encrypted overlay network encryption issue  
+- ✅ **Fixed GO-2023-1701**: Docker Swarm single endpoint authentication issue
 
-```text
-module declares its path as: github.com/moby/moby/client but was required as: github.com/docker/docker/client
-```
+**Note**: If you encounter API compatibility issues with newer Docker versions, the codebase has been updated to use the v28 API structure.
 
-**Solutions**:
+**Solutions for older versions**:
 
-1. **Temporary approach**: Remove Docker client imports until needed in later chapters
+1. **Recommended**: Use Docker v28.3.3+incompatible (current implementation)
 2. **Alternative approach**: Use the Moby client directly:
 
    ```bash
