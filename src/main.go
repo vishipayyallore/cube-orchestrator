@@ -68,7 +68,7 @@ func main() {
 	} else {
 		fmt.Printf("✅ Successfully transitioned to: %s\n", task.StateToString(t.State))
 	}
-	fmt.Println("=========================\n")
+	fmt.Println("=========================")
 
 	w := worker.Worker{
 		Name:  "worker-1",
