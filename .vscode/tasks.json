@@ -24,7 +24,7 @@
 			"isBackground": false,
 			"label": "Run Cube Orchestrator",
 			"options": {
-				"cwd": "${workspaceFolder}/src/cmd/orchestrator"
+				"cwd": "${workspaceFolder}/src/orchestrator/cmd"
 			},
 			"problemMatcher": [
 				"$go"
@@ -44,7 +44,7 @@
 			"isBackground": false,
 			"label": "Build for Debugging",
 			"options": {
-				"cwd": "${workspaceFolder}/src/cmd/orchestrator"
+				"cwd": "${workspaceFolder}/src/orchestrator/cmd"
 			},
 			"problemMatcher": [
 				"$go"

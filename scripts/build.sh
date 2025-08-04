@@ -24,7 +24,7 @@ echo -e "${YELLOW}Timestamp: ${TIMESTAMP}${NC}"
 mkdir -p "${BUILD_DIR}"
 
 # Change to src directory for build
-cd src/cmd/orchestrator
+cd src/orchestrator/cmd
 
 # Build the application
 echo -e "${BLUE}📦 Compiling...${NC}"
