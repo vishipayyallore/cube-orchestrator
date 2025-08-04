@@ -37,6 +37,39 @@ func main() {
 	fmt.Printf("task: %v\n", t)
 	fmt.Printf("task event: %v\n", te)
 
+	// Demonstrate State Machine functionality
+	fmt.Println("\n=== State Machine Demo ===")
+	fmt.Printf("Initial task state: %s\n", task.StateToString(t.State))
+	
+	// Valid transition: Pending -> Scheduled
+	if err := t.TransitionState(task.Scheduled); err != nil {
+		fmt.Printf("Error transitioning to Scheduled: %v\n", err)
+	} else {
+		fmt.Printf("✅ Successfully transitioned to: %s\n", task.StateToString(t.State))
+	}
+	
+	// Valid transition: Scheduled -> Running
+	if err := t.TransitionState(task.Running); err != nil {
+		fmt.Printf("Error transitioning to Running: %v\n", err)
+	} else {
+		fmt.Printf("✅ Successfully transitioned to: %s\n", task.StateToString(t.State))
+	}
+	
+	// Invalid transition: Running -> Pending (should fail)
+	if err := t.TransitionState(task.Pending); err != nil {
+		fmt.Printf("❌ Expected error for invalid transition: %v\n", err)
+	} else {
+		fmt.Printf("Unexpected: transitioned to %s\n", task.StateToString(t.State))
+	}
+	
+	// Valid transition: Running -> Completed
+	if err := t.TransitionState(task.Completed); err != nil {
+		fmt.Printf("Error transitioning to Completed: %v\n", err)
+	} else {
+		fmt.Printf("✅ Successfully transitioned to: %s\n", task.StateToString(t.State))
+	}
+	fmt.Println("=========================\n")
+
 	w := worker.Worker{
 		Name:  "worker-1",
 		Queue: *queue.New(),

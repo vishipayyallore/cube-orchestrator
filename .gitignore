@@ -419,3 +419,6 @@ FodyWeavers.xsd
 
 # Author's files
 ch3/
+
+# Executable files
+src
