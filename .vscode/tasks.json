@@ -24,7 +24,7 @@
 			"isBackground": false,
 			"label": "Run Cube Orchestrator",
 			"options": {
-				"cwd": "${workspaceFolder}/src"
+				"cwd": "${workspaceFolder}/src/cmd/orchestrator"
 			},
 			"problemMatcher": [
 				"$go"
@@ -37,14 +37,14 @@
 				"build",
 				"-gcflags=all=-N -l",
 				"-o",
-				"../builds/cube-orchestrator-debug",
+				"../../../builds/cube-orchestrator-debug",
 				"main.go"
 			],
 			"group": "build",
 			"isBackground": false,
 			"label": "Build for Debugging",
 			"options": {
-				"cwd": "${workspaceFolder}/src"
+				"cwd": "${workspaceFolder}/src/cmd/orchestrator"
 			},
 			"problemMatcher": [
 				"$go"

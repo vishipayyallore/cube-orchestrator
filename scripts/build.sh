@@ -24,23 +24,23 @@ echo -e "${YELLOW}Timestamp: ${TIMESTAMP}${NC}"
 mkdir -p "${BUILD_DIR}"
 
 # Change to src directory for build
-cd src
+cd src/cmd/orchestrator
 
 # Build the application
 echo -e "${BLUE}📦 Compiling...${NC}"
-go build -o "../${OUTPUT_FILE}" .
+go build -o "../../../${OUTPUT_FILE}" .
 
 # Make executable (for Unix systems)
-chmod +x "../${OUTPUT_FILE}"
+chmod +x "../../../${OUTPUT_FILE}"
 
 echo -e "${GREEN}✅ Build successful!${NC}"
 echo -e "${GREEN}📁 Executable: ${OUTPUT_FILE}${NC}"
 
 # Show file info
-ls -lh "../${OUTPUT_FILE}"
+ls -lh "../../../${OUTPUT_FILE}"
 
 # Create/update latest symlink for convenience
-cd ..
+cd ../../..
 rm -f "${BUILD_DIR}/${BINARY_NAME}_latest"
 ln -s "${BINARY_NAME}_${TIMESTAMP}" "${BUILD_DIR}/${BINARY_NAME}_latest"
 
