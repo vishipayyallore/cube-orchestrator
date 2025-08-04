@@ -7,28 +7,30 @@ This project follows the Standard Go Project Layout with support for future web 
 ```text
 /workspaces/cube-orchestrator/
 ├── src/
-│   ├── cmd/
-│   │   └── orchestrator/          # Main application entry point
-│   │       └── main.go
-│   ├── internal/                  # Private application code
-│   │   ├── manager/               # Task management logic
-│   │   ├── worker/                # Worker node implementation
-│   │   ├── node/                  # Node abstraction
-│   │   ├── scheduler/             # Task scheduling algorithms
-│   │   └── task/                  # Task definitions and state machine
-│   ├── pkg/                       # Public library code (when needed)
-│   └── web/                       # Future: React.js UI components
-│       ├── public/                # Static assets
-│       ├── src/                   # React source code
-│       └── package.json           # Node.js dependencies
-├── scripts/                       # Build and utility scripts
-│   ├── build.sh                   # Timestamped build script
-│   └── cleanup-builds.sh          # Build artifact cleanup
-├── builds/                        # Build outputs
-├── docs/                          # Documentation
-└── .vscode/                       # VS Code configuration
-    ├── tasks.json                 # Build and run tasks
-    └── launch.json                # Debug configurations
+│   ├── orchestrator/              # Go backend application
+│   │   ├── cmd/
+│   │   │   └── main.go           # Main application entry point
+│   │   ├── internal/             # Private application code
+│   │   │   ├── manager/          # Task management logic
+│   │   │   ├── worker/           # Worker node implementation
+│   │   │   ├── node/             # Node abstraction
+│   │   │   ├── scheduler/        # Task scheduling algorithms
+│   │   │   └── task/             # Task definitions and state machine
+│   │   ├── pkg/                  # Public library code (when needed)
+│   │   ├── go.mod                # Go module definition
+│   │   └── go.sum                # Dependency checksums
+│   └── frontend/                 # React.js frontend application
+│       ├── public/               # Static assets
+│       ├── src/                  # React source code
+│       └── package.json          # Node.js dependencies
+├── scripts/                      # Build and utility scripts
+│   ├── build.sh                  # Timestamped build script
+│   └── cleanup-builds.sh         # Build artifact cleanup
+├── builds/                       # Build outputs
+├── docs/                         # Documentation
+└── .vscode/                      # VS Code configuration
+    ├── tasks.json                # Build and run tasks
+    └── launch.json               # Debug configurations
 ```
 
 ## Why This Structure?
@@ -53,7 +55,7 @@ This project follows the Standard Go Project Layout with support for future web 
 - **API Clients**: Orchestrator client libraries
 - **Shared Utilities**: Common functionality for external consumption
 
-### `/src/web/` Pattern (Future)
+### `/src/frontend/` Pattern
 
 - **UI Integration**: React.js application alongside Go backend
 - **Full-Stack Project**: Single repository for complete solution
@@ -67,11 +69,11 @@ When adding the React.js UI, the structure will support:
 ```bash
 # Development servers
 npm run dev          # React development server (port 3000)
-go run ./src/cmd/orchestrator  # Go API server (port 8080)
+cd src/orchestrator/cmd && go run main.go  # Go API server (port 8080)
 
 # Production build
-npm run build        # Build React app to src/web/build/
-go build ./src/cmd/orchestrator  # Build Go binary with embedded UI
+npm run build        # Build React app to src/frontend/build/
+go build -o builds/orchestrator src/orchestrator/cmd/main.go  # Build Go binary
 ```
 
 ## Build System
@@ -80,7 +82,7 @@ go build ./src/cmd/orchestrator  # Build Go binary with embedded UI
 
 ```bash
 # Quick run
-cd src/cmd/orchestrator
+cd src/orchestrator/cmd
 go run main.go
 
 # Debug build
