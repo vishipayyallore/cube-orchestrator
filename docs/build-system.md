@@ -32,7 +32,6 @@ This will:
 ### Option 2: Manual Build
 
 ```bash
-```bash
 # From src directory
 cd src
 go build -o ../builds/cube-orchestrator_$(date +"%Y%m%d_%H%M%S") .
