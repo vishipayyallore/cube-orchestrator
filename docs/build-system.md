@@ -4,7 +4,7 @@ This document describes the build system for the cube-orchestrator project.
 
 ## 📁 Directory Structure
 
-```
+```text
 scripts/
 ├── build.sh           # Main build script with timestamps
 └── cleanup-builds.sh  # Build cleanup utility
@@ -32,9 +32,12 @@ This will:
 ### Option 2: Manual Build
 
 ```bash
+```bash
 # From src directory
 cd src
 go build -o ../builds/cube-orchestrator_$(date +"%Y%m%d_%H%M%S") .
+```
+
 ```
 
 ### Option 3: VS Code Task
