@@ -122,11 +122,11 @@ go run main.go
 
 ## Module Cache Issues
 
-### Problem
+### Module Cache Problem
 
 Sometimes the Go module cache can become corrupted or contain conflicting versions.
 
-### Solution
+### Module Cache Solution
 
 ```bash
 # Clear module cache
@@ -142,11 +142,11 @@ go mod tidy
 
 ## Import Path Issues
 
-### Problem
+### Import Path Problem
 
 Import paths don't match the actual module structure.
 
-### Solution
+### Import Path Solution
 
 1. **Check go.mod file** to see the module name:
 
@@ -166,11 +166,11 @@ Import paths don't match the actual module structure.
 
 ## Dependency Version Conflicts
 
-### Problem
+### Dependency Conflict Problem
 
 Different packages require conflicting versions of the same dependency.
 
-### Solution
+### Dependency Conflict Solution
 
 1. **Check for conflicts**:
 
@@ -192,7 +192,7 @@ Different packages require conflicting versions of the same dependency.
 
 ## Building and Running Issues
 
-### Problem
+### Runtime Problem
 
 Code compiles but fails at runtime.
 
@@ -222,11 +222,11 @@ Code compiles but fails at runtime.
 
 ## VS Code and gopls Issues
 
-### Problem
+### VS Code Problem
 
 VS Code Go extension shows errors or fails to work properly.
 
-### Solution
+### VS Code Solution
 
 1. **Reload VS Code window**: Ctrl+Shift+P → "Developer: Reload Window"
 
