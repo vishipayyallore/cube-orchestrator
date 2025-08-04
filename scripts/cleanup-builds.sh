@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Cleanup script for cube-orchestrator builds
-# Keeps only the latest N builds (default: 5)
+# Keeps only the most recent N builds to save disk space
 
 set -e
 
 # Configuration
 BUILD_DIR="builds"
-BINARY_PREFIX="cube-orchestrator_"
-KEEP_COUNT=${1:-5}  # Default to keeping 5 builds, can be overridden
+BINARY_NAME="cube-orchestrator"
+KEEP_BUILDS=1
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -18,48 +18,45 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}🧹 Cleaning up old builds...${NC}"
-echo -e "${YELLOW}Keeping latest ${KEEP_COUNT} builds${NC}"
 
-# Change to project root
-cd "$(dirname "$0")/.."
-
-# Check if builds directory exists
 if [ ! -d "${BUILD_DIR}" ]; then
-    echo -e "${YELLOW}⚠️  No builds directory found. Nothing to clean.${NC}"
+    echo -e "${YELLOW}⚠️  No builds directory found${NC}"
     exit 0
 fi
 
-# List all timestamped builds (excluding symlinks)
 cd "${BUILD_DIR}"
-BUILDS=($(ls -t ${BINARY_PREFIX}[0-9]* 2>/dev/null | head -20))
 
-if [ ${#BUILDS[@]} -eq 0 ]; then
-    echo -e "${YELLOW}⚠️  No timestamped builds found. Nothing to clean.${NC}"
+# Count timestamped builds (exclude latest symlink and debug builds)
+BUILD_COUNT=$(ls -1 ${BINARY_NAME}_[0-9]* 2>/dev/null | wc -l)
+
+echo -e "${BLUE}📊 Found ${BUILD_COUNT} timestamped builds${NC}"
+
+if [ "$BUILD_COUNT" -le "$KEEP_BUILDS" ]; then
+    echo -e "${GREEN}✅ No cleanup needed (keeping up to ${KEEP_BUILDS} builds)${NC}"
     exit 0
 fi
 
-echo -e "${BLUE}📋 Found ${#BUILDS[@]} builds:${NC}"
-for build in "${BUILDS[@]}"; do
-    echo "  - $build"
+# Calculate how many to delete
+DELETE_COUNT=$((BUILD_COUNT - KEEP_BUILDS))
+echo -e "${YELLOW}🗑️  Will delete ${DELETE_COUNT} old builds${NC}"
+
+# Get oldest builds to delete
+TO_DELETE=$(ls -1t ${BINARY_NAME}_[0-9]* | tail -n ${DELETE_COUNT})
+
+# Delete old builds
+for build in $TO_DELETE; do
+    echo -e "${RED}🗑️  Deleting: ${build}${NC}"
+    rm -f "$build"
 done
 
-# If we have more builds than we want to keep, delete the old ones
-if [ ${#BUILDS[@]} -gt ${KEEP_COUNT} ]; then
-    BUILDS_TO_DELETE=(${BUILDS[@]:${KEEP_COUNT}})
-    
-    echo -e "\n${RED}🗑️  Deleting ${#BUILDS_TO_DELETE[@]} old builds:${NC}"
-    for build in "${BUILDS_TO_DELETE[@]}"; do
-        echo -e "  ${RED}Removing: $build${NC}"
-        rm -f "$build"
-    done
-    
-    echo -e "\n${GREEN}✅ Cleanup completed!${NC}"
-    echo -e "${GREEN}📁 Kept latest ${KEEP_COUNT} builds${NC}"
-else
-    echo -e "\n${GREEN}✅ No cleanup needed.${NC}"
-    echo -e "${GREEN}📁 Current build count (${#BUILDS[@]}) is within limit (${KEEP_COUNT})${NC}"
+# Update latest symlink to point to most recent build
+LATEST_BUILD=$(ls -1t ${BINARY_NAME}_[0-9]* | head -n 1)
+if [ -n "$LATEST_BUILD" ]; then
+    rm -f "${BINARY_NAME}_latest"
+    ln -s "$LATEST_BUILD" "${BINARY_NAME}_latest"
+    echo -e "${GREEN}🔗 Updated latest symlink to: ${LATEST_BUILD}${NC}"
 fi
 
-# Show remaining builds
-echo -e "\n${BLUE}📋 Remaining builds:${NC}"
-ls -la ${BINARY_PREFIX}* 2>/dev/null || echo "  No builds found"
+echo -e "${GREEN}✅ Cleanup complete!${NC}"
+echo -e "${BLUE}📋 Remaining builds:${NC}"
+ls -la ${BINARY_NAME}_*

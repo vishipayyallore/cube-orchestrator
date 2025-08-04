@@ -49,3 +49,5 @@ echo -e "${GREEN}🔗 Latest symlink updated: ${BUILD_DIR}/${BINARY_NAME}_latest
 # Show builds directory contents
 echo -e "${BLUE}📋 Builds directory:${NC}"
 ls -la "${BUILD_DIR}/"
+
+echo -e "${GREEN}🎉 Build complete!${NC}"
