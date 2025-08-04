@@ -66,6 +66,7 @@ go get github.com/sirupsen/logrus
 ### Docker Client Dependencies (Troubleshooting)
 
 **Security Update**: This project now uses Docker v28.3.3+incompatible to address security vulnerabilities:
+
 - ✅ **Fixed GO-2023-1699**: Docker Swarm encrypted overlay network authentication issue
 - ✅ **Fixed GO-2023-1700**: Docker Swarm encrypted overlay network encryption issue  
 - ✅ **Fixed GO-2023-1701**: Docker Swarm single endpoint authentication issue

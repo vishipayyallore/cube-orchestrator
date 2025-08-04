@@ -57,9 +57,12 @@ The project currently includes:
 - `github.com/golang-collections/collections/queue` - Queue data structure for task management
 - `github.com/google/uuid` - UUID generation for unique task and event IDs
 - `github.com/docker/go-connections/nat` - Docker networking utilities
-- `github.com/docker/docker/client` - Docker client for container management
-- `github.com/docker/docker/api/types` - Docker API types and structures
+- `github.com/docker/docker/client` - Docker client for container management (v28.3.3+incompatible)
+- `github.com/docker/docker/api/types/container` - Docker container API types
+- `github.com/docker/docker/api/types/image` - Docker image API types
 - Additional Docker, monitoring, and HTTP routing libraries for full orchestrator functionality
+
+**Security Note**: Uses Docker v28.3.3 to address GO-2023-1699, GO-2023-1700, and GO-2023-1701 vulnerabilities.
 
 ## Coding Guidelines
 
