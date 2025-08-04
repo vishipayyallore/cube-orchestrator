@@ -2,11 +2,50 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"args": [],
 			"command": "./scripts/build.sh",
 			"group": "build",
 			"isBackground": false,
 			"label": "Build Cube Orchestrator (Timestamped)",
+			"problemMatcher": [
+				"$go"
+			],
+			"type": "shell"
+		},
+		{
+			"command": "go",
+			"args": [
+				"run",
+				"main.go"
+			],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"isBackground": false,
+			"label": "Run Cube Orchestrator",
+			"options": {
+				"cwd": "${workspaceFolder}/src"
+			},
+			"problemMatcher": [
+				"$go"
+			],
+			"type": "shell"
+		},
+		{
+			"command": "go",
+			"args": [
+				"build",
+				"-gcflags=all=-N -l",
+				"-o",
+				"../builds/cube-orchestrator-debug",
+				"main.go"
+			],
+			"group": "build",
+			"isBackground": false,
+			"label": "Build for Debugging",
+			"options": {
+				"cwd": "${workspaceFolder}/src"
+			},
 			"problemMatcher": [
 				"$go"
 			],
