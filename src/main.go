@@ -22,6 +22,7 @@ func main() {
 		Name:   "Task-1",
 		State:  task.Pending,
 		Image:  "Image-1",
+		Cpu:    1.0,
 		Memory: 1024,
 		Disk:   1,
 	}
