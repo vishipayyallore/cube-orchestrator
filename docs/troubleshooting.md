@@ -7,6 +7,7 @@ This document contains solutions to common issues encountered while building the
 ### Security Update - Docker v28.3.3
 
 **Current Implementation**: This project uses Docker v28.3.3+incompatible to fix critical security vulnerabilities:
+
 - GO-2023-1699: Docker Swarm encrypted overlay network authentication
 - GO-2023-1700: Docker Swarm encrypted overlay network encryption  
 - GO-2023-1701: Docker Swarm single endpoint authentication
