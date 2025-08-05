@@ -100,6 +100,7 @@ cd src/orchestrator/cmd && go run main.go
 | [project-structure.md](project-structure.md) | Architecture documentation | ✅ Complete |
 | [go-project-layout.md](go-project-layout.md) | Go best practices guide | ✅ Complete |
 | [build-system.md](build-system.md) | Build process documentation | ✅ Complete |
+| [api-architecture.md](api-architecture.md) | API design and pkg/ vs internal/ strategy | ✅ Complete |
 | [docker-commands.md](docker-commands.md) | Docker reference commands | ✅ Complete |
 | [postgresql-primer.md](postgresql-primer.md) | Database setup guide | ✅ Complete |
 | [troubleshooting.md](troubleshooting.md) | Common issues and solutions | ✅ Complete |
