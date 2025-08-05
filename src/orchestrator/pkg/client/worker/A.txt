@@ -1,0 +1,13 @@
+# Worker Client Package
+
+This directory contains the public API client for worker operations in the cube-orchestrator project. 
+
+The worker client package provides external consumers with a clean, stable interface to interact with worker nodes without exposing internal implementation details. This follows Go's standard project layout where `pkg/` contains library code that can be safely imported by external applications.
+
+Key responsibilities of this package will include:
+- Worker registration and management APIs
+- Task submission and lifecycle operations
+- Worker health monitoring and status queries
+- Resource allocation and capacity management
+
+This package abstracts the complexity of worker interactions and provides a simple, well-documented API for external systems that need to manage worker nodes programmatically. The internal worker implementation remains in `internal/worker/` while this package serves as the public-facing client interface.
