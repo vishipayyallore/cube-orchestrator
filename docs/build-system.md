@@ -32,9 +32,9 @@ This will:
 ### Option 2: Manual Build
 
 ```bash
-# From src directory
-cd src
-go build -o ../builds/cube-orchestrator_$(date +"%Y%m%d_%H%M%S") .
+# From orchestrator directory
+cd src/orchestrator
+go build -o ../../builds/cube-orchestrator_$(date +"%Y%m%d_%H%M%S") ./cmd
 ```
 
 ### Option 3: VS Code Task

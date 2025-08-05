@@ -10,24 +10,33 @@ cube-orchestrator/
 │   └── settings.json   # Copilot settings for the project
 ├── .github/            # GitHub configuration
 │   └── copilot-instructions.md # Copilot context and guidelines
-├── docs/               # Documentation and images
-│   ├── images/
-│   ├── docker-commands.md # Docker commands reference
-│   ├── postgresql-primer.md # PostgreSQL guide
-│   └── troubleshooting.md # Common issues and solutions
+├── docs/               # Comprehensive documentation suite
+│   ├── images/         # Documentation images and diagrams
+│   ├── api-architecture.md     # API design patterns and structure
+│   ├── build-system.md         # Build system documentation
+│   ├── docker-commands.md      # Docker commands reference
+│   ├── go-project-layout.md    # Go project structure guidelines
+│   ├── pkg-directory-plan.md   # Future API package planning
+│   ├── postgresql-primer.md    # PostgreSQL guide
+│   ├── project-overview.md     # High-level project overview
+│   ├── project-structure.md    # Detailed structure documentation
+│   └── troubleshooting.md      # Common issues and solutions
+├── scripts/            # Build and utility scripts
+│   ├── build.sh        # Professional build script with timestamping
+│   └── cleanup-builds.sh # Build artifact cleanup utility
 ├── src/                # Source code directory
-│   ├── main.go         # Main application entry point
-│   ├── manager/        # Orchestrator manager component
-│   │   └── manager.go  # Manager implementation
-│   ├── node/           # Node management component
-│   │   └── node.go     # Node implementation
-│   ├── scheduler/      # Task scheduling component
-│   │   └── scheduler.go # Scheduler implementation
-│   ├── task/           # Task definition and management
-│   │   └── task.go     # Task implementation
-│   └── worker/         # Worker node component
-│       └── worker.go   # Worker implementation
-├── go.mod              # Go module definition
+│   └── orchestrator/   # Main orchestrator application
+│       ├── cmd/main.go # Main application with orchestrator demo
+│       ├── internal/   # Private application packages
+│       │   ├── docker/     # Docker client abstraction
+│       │   ├── manager/    # Orchestrator manager component
+│       │   ├── worker/     # Worker node implementation
+│       │   ├── node/       # Node abstraction and resources
+│       │   ├── scheduler/  # Task scheduling algorithms
+│       │   └── task/       # Task definitions and state machine
+│       ├── pkg/        # Public API packages (planned)
+│       ├── go.mod      # Go module definition
+│       └── go.sum      # Dependency checksums
 ├── LICENSE             # Project license
 └── README.md           # Project documentation
 ```
@@ -37,7 +46,7 @@ cube-orchestrator/
 To manage third-party dependencies, use the Go module system. Run the following commands in the project root:
 
 ```bash
-# Clean module cache and tidy dependencies 
+# Clean module cache and tidy dependencies
 go clean -modcache
 go mod tidy
 
@@ -91,8 +100,8 @@ go get github.com/sirupsen/logrus
 To run the cube orchestrator demo:
 
 ```bash
-cd src
-go run main.go
+cd src/orchestrator
+go run ./cmd/main.go
 ```
 
 ![Cube Orchestrator Demo Output](docs/images/After_Ch_2.PNG)

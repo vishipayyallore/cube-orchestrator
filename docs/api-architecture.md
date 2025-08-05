@@ -14,11 +14,17 @@ As we evolve from the current demo application to a production-ready orchestrato
 src/orchestrator/
 ├── cmd/main.go                     # Demo application
 ├── internal/                       # Private implementation
+│   ├── docker/client.go            # Docker client abstraction
 │   ├── manager/manager.go          # Manager component
 │   ├── worker/worker.go            # Worker component
-│   ├── task/task.go                # Task definitions
+│   ├── task/                       # Task management
+│   │   ├── task.go                 # Task definitions (cleaned up)
+│   │   └── state_machine.go        # State transition logic
 │   ├── node/node.go                # Node abstraction
 │   └── scheduler/scheduler.go      # Scheduler component
+├── pkg/                            # Future public APIs (planned)
+│   ├── client/worker/              # Worker API client (planned)
+│   └── types/                      # Public type definitions (planned)
 ├── go.mod
 └── go.sum
 ```
