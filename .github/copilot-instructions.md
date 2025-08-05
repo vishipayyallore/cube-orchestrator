@@ -20,24 +20,46 @@ cube-orchestrator/
 │   └── settings.json   # Copilot settings for the project
 ├── .github/            # GitHub configuration
 │   └── copilot-instructions.md # Copilot context and guidelines
-├── docs/               # Documentation and images
-│   ├── images/
-│   ├── docker-commands.md # Docker commands reference  
-│   ├── postgresql-primer.md # PostgreSQL guide
-│   └── troubleshooting.md # Common issues and solutions
+├── .vscode/            # VS Code workspace configuration
+│   ├── launch.json     # Debug configurations
+│   ├── settings.json   # Workspace settings
+│   └── tasks.json      # Build and run tasks
+├── builds/             # Build artifacts directory
+│   ├── cube-orchestrator-debug    # Debug build
+│   ├── cube-orchestrator_latest   # Latest timestamped build
+│   └── cube-orchestrator_YYYYMMDD_HHMMSS # Timestamped builds
+├── chx/                # Chapter exercises and examples
+├── docs/               # Comprehensive documentation suite
+│   ├── images/         # Documentation images and diagrams
+│   ├── api-architecture.md     # API design patterns and structure
+│   ├── build-system.md         # Build system documentation
+│   ├── configuration-verification.md # Environment setup verification
+│   ├── docker-commands.md      # Docker commands reference
+│   ├── go-project-layout.md    # Go project structure guidelines
+│   ├── pkg-directory-plan.md   # Future API package planning
+│   ├── postgresql-primer.md    # PostgreSQL guide
+│   ├── project-overview.md     # High-level project overview
+│   ├── project-structure.md    # Detailed structure documentation
+│   └── troubleshooting.md      # Common issues and solutions
+├── scripts/            # Build and utility scripts
+│   ├── build.sh        # Professional build script with timestamping
+│   └── cleanup-builds.sh # Build artifact cleanup utility
 ├── src/                # Source code directory
-│   ├── main.go         # Main application with orchestrator demo
-│   ├── manager/        # Orchestrator manager component
-│   │   └── manager.go  # Manager implementation for task coordination
-│   ├── node/           # Node management component
-│   │   └── node.go     # Node implementation for cluster resources
-│   ├── scheduler/      # Task scheduling component
-│   │   └── scheduler.go # Scheduler implementation for task distribution
-│   ├── task/           # Task definition and management
-│   │   └── task.go     # Task and TaskEvent implementations
-│   └── worker/         # Worker node component
-│       └── worker.go   # Worker implementation for task execution
-├── go.mod              # Go module definition with dependencies
+│   ├── frontend/       # Future frontend components
+│   └── orchestrator/   # Main orchestrator application
+│       ├── cmd/        # Application entry points
+│       │   └── main.go # Main application with orchestrator demo
+│       ├── internal/   # Private application packages
+│       │   ├── docker/     # Docker client abstraction
+│       │   ├── manager/    # Orchestrator manager component
+│       │   ├── node/       # Node management component
+│       │   ├── scheduler/  # Task scheduling component
+│       │   ├── task/       # Task definition and management
+│       │   └── worker/     # Worker node component
+│       ├── pkg/        # Public API packages (planned)
+│       ├── go.mod      # Go module definition with dependencies
+│       └── go.sum      # Go module checksums
+├── .gitignore          # Git ignore patterns
 ├── LICENSE             # Project license
 └── README.md           # Project documentation
 ```
@@ -45,12 +67,25 @@ cube-orchestrator/
 ## Current Implementation Status
 
 The project currently includes:
-- **Task Management**: Task and TaskEvent structures with states (Pending, Running, Completed, Failed)
+- **Task Management**: Task and TaskEvent structures with states (Pending, Scheduled, Running, Completed, Failed)
+- **Docker Integration**: Dedicated Docker package with client abstraction for container management
 - **Worker Implementation**: Worker nodes with task queues, databases, and lifecycle management
 - **Manager Coordination**: Manager for task distribution, worker selection, and system coordination
 - **Node Resources**: Node definitions with resource specifications (CPU, memory, disk)
-- **Docker Integration**: Complete Docker client functionality for container management
+- **Scheduler Logic**: Task scheduling algorithms and resource allocation
 - **Demo Application**: Functional main.go demonstrating all components including Docker containers
+- **Build System**: Professional build system with timestamped artifacts and cleanup automation
+- **Documentation Suite**: Comprehensive documentation covering architecture, APIs, and troubleshooting
+
+## Architecture Evolution
+
+The project follows Go standard project layout:
+- `cmd/`: Application entry points and main packages
+- `internal/`: Private packages not intended for external use
+- `pkg/`: Public API packages (planned for future external consumption)
+- `docs/`: Comprehensive documentation with architecture guides
+- `builds/`: Professional build artifacts with timestamping
+- `scripts/`: Build automation and utility scripts
 
 ## Key Dependencies
 
@@ -81,19 +116,23 @@ The project currently includes:
 
 ### Orchestrator-Specific Patterns
 - Follow event-driven architecture where appropriate
-- Implement proper state management for tasks and workers (Pending, Running, Completed, Failed states)
+- Implement proper state management for tasks and workers (Pending, Scheduled, Running, Completed, Failed states)
 - Use goroutines and channels for concurrent operations
 - Design with scalability and fault tolerance in mind
 - Utilize queue-based task distribution patterns
 - Implement resource-aware scheduling algorithms
 - Use UUID-based identification for tasks and events
 - Maintain separation between manager, worker, and node responsibilities
+- Abstract Docker operations through dedicated client interface
+- Follow internal/ vs pkg/ package organization for API development
 
 ### Code Organization
-- Place related functionality in appropriate packages
+- Place private functionality in `internal/` packages
+- Reserve `pkg/` for future public APIs
 - Use descriptive package names that reflect their purpose
 - Keep main business logic separate from infrastructure code
 - Write comprehensive tests for critical components
+- Follow established patterns for Docker abstraction and container lifecycle management
 
 ### Documentation
 - Include package-level documentation
