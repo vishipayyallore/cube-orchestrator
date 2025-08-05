@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Cube Orchestrator",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/src/orchestrator/cmd/main.go",
+            "cwd": "${workspaceFolder}/src/orchestrator/cmd",
+            "console": "integratedTerminal",
+            "showLog": true,
+            "preLaunchTask": "Build for Debugging"
+        },
+        {
+            "name": "Debug Current File",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "showLog": true
+        }
+    ]
+}
