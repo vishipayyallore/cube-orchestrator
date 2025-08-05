@@ -39,12 +39,15 @@ This project follows the Standard Go Project Layout with support for future web 
     │   ├── cmd/                  # Application entry points
     │   │   └── main.go           # Main orchestrator application
     │   ├── internal/             # Private application code
+    │   │   ├── docker/           # Docker client abstraction and container operations
     │   │   ├── manager/          # Task management and coordination
     │   │   ├── worker/           # Worker node implementation
     │   │   ├── node/             # Node abstraction and resources
     │   │   ├── scheduler/        # Task scheduling algorithms
     │   │   └── task/             # Task definitions and state machine
     │   ├── pkg/                  # Public library code (future)
+    │   │   ├── client/           # API client libraries (planned)
+    │   │   └── types/            # Public type definitions (planned)
     │   ├── go.mod                # Go module definition
     │   └── go.sum                # Dependency checksums and verification
     └── frontend/                 # React.js frontend application (future)
