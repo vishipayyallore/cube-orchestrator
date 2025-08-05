@@ -1,0 +1,14 @@
+# Types Package
+
+This directory contains shared type definitions and data structures that form the public API contracts for the cube-orchestrator project.
+
+The types package provides common structs, interfaces, and constants that can be safely imported and used by external applications and internal packages alike. This follows Go's standard project layout where `pkg/types/` contains stable, well-defined data types that represent the core domain models of the orchestrator.
+
+Key responsibilities of this package will include:
+- Task definition and state enumerations
+- Worker and node resource specifications
+- API request/response structures
+- Event and notification type definitions
+- Common configuration and runtime types
+
+This package serves as the foundation for type safety across the entire orchestrator ecosystem, ensuring consistent data structures between internal components and external consumers. By centralizing type definitions here, we maintain a single source of truth for the orchestrator's data models while providing a stable contract for API consumers.
