@@ -5,9 +5,10 @@ package task
 import "fmt"
 
 // State transition mapping defines which states can transition to which other states
+// Updated to match Chapter 4's expected behavior
 var stateTransitionMap = map[State][]State{
 	Pending:   {Scheduled},
-	Scheduled: {Running, Failed},
+	Scheduled: {Scheduled, Running, Failed}, // Chapter 4: Allow staying in Scheduled
 	Running:   {Running, Completed, Failed},
 	Completed: {},
 	Failed:    {},
@@ -22,6 +23,12 @@ func ValidateStateTransition(from, to State) bool {
 		}
 	}
 	return false
+}
+
+// ValidStateTransition is an alias for ValidateStateTransition
+// This provides Chapter 4 compatibility (the book uses this exact function name)
+func ValidStateTransition(from, to State) bool {
+	return ValidateStateTransition(from, to)
 }
 
 // GetAllowedStates returns all states that can be transitioned to from the current state
