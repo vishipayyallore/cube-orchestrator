@@ -71,6 +71,8 @@ func main() {
 	}
 	fmt.Println("=========================")
 
+	// Chapter 4 Worker Demo - Real task processing
+	fmt.Println("\n=== Chapter 4 Worker Task Processing Demo ===")
 	w := worker.Worker{
 		Name:  "worker-1",
 		Queue: *queue.New(),
@@ -78,9 +80,26 @@ func main() {
 	}
 	fmt.Printf("worker: %v\n", w)
 	w.CollectStats()
-	w.RunTask()
-	w.StartTask()
-	w.StopTask()
+
+	// Create a test task for Chapter 4 workflow
+	testTask := task.Task{
+		ID:    uuid.New(),
+		Name:  "test-container-1",
+		State: task.Scheduled,
+		Image: "strm/helloworld-http",
+	}
+
+	fmt.Printf("Adding task %s to worker queue\n", testTask.ID)
+	w.AddTask(testTask)
+
+	fmt.Println("Processing task via RunTask()...")
+	result := w.RunTask()
+	if result.Error != nil {
+		fmt.Printf("Error processing task: %v\n", result.Error)
+	} else {
+		fmt.Printf("Task processed successfully, container: %s\n", result.ContainerId)
+	}
+	fmt.Println("=== Chapter 4 Worker Demo Complete ===\n")
 
 	m := manager.Manager{
 		Pending: *queue.New(),
