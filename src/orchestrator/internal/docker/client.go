@@ -2,6 +2,7 @@ package docker
 
 import (
 	"context"
+	"cubeorchestrator/internal/task"
 	"io"
 	"log"
 	"os"
@@ -129,5 +130,74 @@ func (d *Docker) Remove(containerId string) DockerResult {
 		Action:      "remove",
 		ContainerId: containerId,
 		Result:      "success",
+	}
+}
+
+// NewConfig creates a Docker configuration from a task
+// This bridges Chapter 4's pattern with our modern implementation
+func NewConfig(t interface{}) *Config {
+	// Handle both *task.Task and task.Task
+	var taskObj *task.Task
+
+	switch v := t.(type) {
+	case *task.Task:
+		taskObj = v
+	case task.Task:
+		taskObj = &v
+	default:
+		// Fallback for unexpected types
+		log.Printf("Warning: NewConfig received unexpected type %T, using default config", t)
+		return &Config{
+			Name:          "default-container",
+			Image:         "strm/helloworld-http",
+			RestartPolicy: "no",
+			ExposedPorts:  make(nat.PortSet),
+			AttachStdin:   false,
+			AttachStdout:  true,
+			AttachStderr:  true,
+			Env:           []string{},
+		}
+	}
+
+	// Create config from task properties
+	exposedPorts := taskObj.ExposedPorts
+	if exposedPorts == nil {
+		exposedPorts = make(nat.PortSet)
+	}
+
+	restartPolicy := taskObj.RestartPolicy
+	if restartPolicy == "" {
+		restartPolicy = "no"
+	}
+
+	return &Config{
+		Name:          taskObj.Name,
+		Image:         taskObj.Image,
+		ExposedPorts:  exposedPorts,
+		Cpu:           taskObj.Cpu,
+		Memory:        taskObj.Memory,
+		Disk:          taskObj.Disk,
+		RestartPolicy: restartPolicy,
+		AttachStdin:   false,
+		AttachStdout:  true,
+		AttachStderr:  true,
+		Env:           []string{},
+	}
+} // NewDocker creates a new Docker client with the given configuration
+// This matches Chapter 4's pattern while using our modern Docker client
+func NewDocker(c *Config) *Docker {
+	dc, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		log.Printf("Error creating Docker client: %v", err)
+		// Return nil client - calling code should check for errors
+		return &Docker{
+			Client: nil,
+			Config: *c,
+		}
+	}
+
+	return &Docker{
+		Client: dc,
+		Config: *c,
 	}
 }
