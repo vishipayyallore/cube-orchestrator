@@ -3,18 +3,18 @@
 package main
 
 import (
-	"cubeorchestrator/internal/manager"
-	"cubeorchestrator/internal/node"
-	"cubeorchestrator/internal/runtime"
-	"cubeorchestrator/internal/task"
-	"cubeorchestrator/internal/worker"
-
 	"fmt"
 	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
+
+	"cubeorchestrator/internal/manager"
+	"cubeorchestrator/internal/node"
+	"cubeorchestrator/internal/runtime"
+	"cubeorchestrator/internal/task"
+	"cubeorchestrator/internal/worker"
 )
 
 func main() {

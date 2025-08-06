@@ -3,8 +3,6 @@
 package worker
 
 import (
-	"cubeorchestrator/internal/runtime"
-	"cubeorchestrator/internal/task"
 	"errors"
 	"fmt"
 	"log"
@@ -12,6 +10,9 @@ import (
 
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
+
+	"cubeorchestrator/internal/runtime"
+	"cubeorchestrator/internal/task"
 )
 
 type Worker struct {

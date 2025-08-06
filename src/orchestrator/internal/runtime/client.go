@@ -2,7 +2,6 @@ package runtime
 
 import (
 	"context"
-	"cubeorchestrator/internal/task"
 	"io"
 	"log"
 	"os"
@@ -12,6 +11,8 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
 	"github.com/moby/moby/pkg/stdcopy"
+
+	"cubeorchestrator/internal/task"
 )
 
 type Config struct {
