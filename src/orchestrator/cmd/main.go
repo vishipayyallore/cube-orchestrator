@@ -84,7 +84,7 @@ func main() {
 	// Create a test task for Chapter 4 workflow
 	testTask := task.Task{
 		ID:    uuid.New(),
-		Name:  "test-container-1",
+		Name:  fmt.Sprintf("test-container-%s", uuid.New().String()[:8]), // Unique name
 		State: task.Scheduled,
 		Image: "strm/helloworld-http",
 	}
@@ -127,15 +127,18 @@ func main() {
 	fmt.Printf("create a test container\n")
 	dockerTask, createResult := createContainer()
 
-	time.Sleep(time.Second * 5)
-
-	fmt.Printf("stopping container %s\n", createResult.ContainerId)
-	_ = stopContainer(dockerTask, createResult.ContainerId)
+	if dockerTask != nil && createResult != nil {
+		time.Sleep(time.Second * 5)
+		fmt.Printf("stopping container %s\n", createResult.ContainerId)
+		_ = stopContainer(dockerTask, createResult.ContainerId)
+	} else {
+		fmt.Println("Skipping container stop due to creation failure")
+	}
 }
 
 func createContainer() (*docker.Docker, *docker.DockerResult) {
 	c := docker.Config{
-		Name:  "test-container-1",
+		Name:  fmt.Sprintf("postgres-container-%s", uuid.New().String()[:8]), // Unique name
 		Image: "postgres:13",
 		Env: []string{
 			"POSTGRES_USER=cube",
