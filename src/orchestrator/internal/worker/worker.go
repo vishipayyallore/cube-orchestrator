@@ -3,7 +3,7 @@
 package worker
 
 import (
-	"cubeorchestrator/internal/docker"
+	"cubeorchestrator/internal/runtime"
 	"cubeorchestrator/internal/task"
 	"errors"
 	"fmt"
@@ -31,12 +31,12 @@ func (w *Worker) CollectStats() {
 	fmt.Println("I will collect stats")
 }
 
-func (w *Worker) RunTask() docker.DockerResult {
+func (w *Worker) RunTask() runtime.RuntimeResult {
 	// Dequeue the next task from the worker's queue
 	t := w.Queue.Dequeue()
 	if t == nil {
 		log.Println("No tasks in the queue")
-		return docker.DockerResult{Error: nil}
+		return runtime.RuntimeResult{Error: nil}
 	}
 
 	// Get the task from the queue (type assertion)
@@ -49,9 +49,7 @@ func (w *Worker) RunTask() docker.DockerResult {
 		w.Db[taskQueued.ID] = &taskQueued
 	}
 
-	var result docker.DockerResult
-
-	// Validate state transition before processing
+	var result runtime.RuntimeResult // Validate state transition before processing
 	if task.ValidateStateTransition(taskPersisted.State, taskQueued.State) {
 		switch taskQueued.State {
 		case task.Scheduled:
@@ -74,25 +72,25 @@ func (w *Worker) RunTask() docker.DockerResult {
 	return result
 }
 
-func (w *Worker) StartTask(t task.Task) docker.DockerResult {
+func (w *Worker) StartTask(t task.Task) runtime.RuntimeResult {
 	// Set start time
 	t.StartTime = time.Now().UTC()
 
-	// Create Docker configuration from task
-	config := docker.NewConfig(&t)
-	d := docker.NewDocker(config)
+	// Create runtime configuration from task
+	config := runtime.NewConfig(&t)
+	r := runtime.NewRuntime(config)
 
-	// Check if Docker client was created successfully
-	if d.Client == nil {
-		err := errors.New("failed to create Docker client")
-		log.Printf("Error creating Docker client for task %v: %v", t.ID, err)
+	// Check if runtime client was created successfully
+	if r.Client == nil {
+		err := errors.New("failed to create runtime client")
+		log.Printf("Error creating runtime client for task %v: %v", t.ID, err)
 		t.State = task.Failed
 		w.Db[t.ID] = &t
-		return docker.DockerResult{Error: err}
+		return runtime.RuntimeResult{Error: err}
 	}
 
 	// Run the container
-	result := d.Run()
+	result := r.Run()
 	if result.Error != nil {
 		log.Printf("Error running task %v: %v", t.ID, result.Error)
 		t.State = task.Failed
@@ -109,20 +107,20 @@ func (w *Worker) StartTask(t task.Task) docker.DockerResult {
 	return result
 }
 
-func (w *Worker) StopTask(t task.Task) docker.DockerResult {
-	// Create Docker configuration for stopping
-	config := docker.NewConfig(&t)
-	d := docker.NewDocker(config)
+func (w *Worker) StopTask(t task.Task) runtime.RuntimeResult {
+	// Create runtime configuration for stopping
+	config := runtime.NewConfig(&t)
+	r := runtime.NewRuntime(config)
 
-	// Check if Docker client was created successfully
-	if d.Client == nil {
-		err := errors.New("failed to create Docker client")
-		log.Printf("Error creating Docker client for stopping task %v: %v", t.ID, err)
-		return docker.DockerResult{Error: err}
+	// Check if runtime client was created successfully
+	if r.Client == nil {
+		err := errors.New("failed to create runtime client")
+		log.Printf("Error creating runtime client for stopping task %v: %v", t.ID, err)
+		return runtime.RuntimeResult{Error: err}
 	}
 
 	// Stop and remove the container
-	result := d.Stop(t.ContainerID)
+	result := r.Stop(t.ContainerID)
 	if result.Error != nil {
 		log.Printf("Error stopping container %v: %v", t.ContainerID, result.Error)
 		return result

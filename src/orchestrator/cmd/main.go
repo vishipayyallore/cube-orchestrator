@@ -3,9 +3,9 @@
 package main
 
 import (
-	"cubeorchestrator/internal/docker"
 	"cubeorchestrator/internal/manager"
 	"cubeorchestrator/internal/node"
+	"cubeorchestrator/internal/runtime"
 	"cubeorchestrator/internal/task"
 	"cubeorchestrator/internal/worker"
 
@@ -125,19 +125,19 @@ func main() {
 	fmt.Printf("node: %v\n", n)
 
 	fmt.Printf("create a test container\n")
-	dockerTask, createResult := createContainer()
+	runtimeTask, createResult := createContainer()
 
-	if dockerTask != nil && createResult != nil {
+	if runtimeTask != nil && createResult != nil {
 		time.Sleep(time.Second * 5)
 		fmt.Printf("stopping container %s\n", createResult.ContainerId)
-		_ = stopContainer(dockerTask, createResult.ContainerId)
+		_ = stopContainer(runtimeTask, createResult.ContainerId)
 	} else {
 		fmt.Println("Skipping container stop due to creation failure")
 	}
 }
 
-func createContainer() (*docker.Docker, *docker.DockerResult) {
-	c := docker.Config{
+func createContainer() (*runtime.Runtime, *runtime.RuntimeResult) {
+	c := runtime.Config{
 		Name:  fmt.Sprintf("postgres-container-%s", uuid.New().String()[:8]), // Unique name
 		Image: "postgres:13",
 		Env: []string{
@@ -147,23 +147,23 @@ func createContainer() (*docker.Docker, *docker.DockerResult) {
 	}
 
 	dc, _ := client.NewClientWithOpts(client.FromEnv)
-	d := docker.Docker{
+	r := runtime.Runtime{
 		Client: dc,
 		Config: c,
 	}
 
-	result := d.Run()
+	result := r.Run()
 	if result.Error != nil {
 		fmt.Printf("%v\n", result.Error)
 		return nil, nil
 	}
 
 	fmt.Printf("Container %s is running with config %v\n", result.ContainerId, c)
-	return &d, &result
+	return &r, &result
 }
 
-func stopContainer(d *docker.Docker, id string) *docker.DockerResult {
-	result := d.Stop(id)
+func stopContainer(r *runtime.Runtime, id string) *runtime.RuntimeResult {
+	result := r.Stop(id)
 	if result.Error != nil {
 		fmt.Printf("%v\n", result.Error)
 		return nil

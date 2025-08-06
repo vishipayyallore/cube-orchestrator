@@ -1,4 +1,4 @@
-package docker
+package runtime
 
 import (
 	"context"
@@ -29,111 +29,111 @@ type Config struct {
 	RestartPolicy string
 }
 
-type Docker struct {
+type Runtime struct {
 	Client *client.Client
 	Config Config
 }
 
-type DockerResult struct {
+type RuntimeResult struct {
 	Error       error
 	Action      string
 	ContainerId string
 	Result      string
 }
 
-func (d *Docker) Run() DockerResult {
+func (r *Runtime) Run() RuntimeResult {
 	ctx := context.Background()
-	reader, err := d.Client.ImagePull(
-		ctx, d.Config.Image, image.PullOptions{})
+	reader, err := r.Client.ImagePull(
+		ctx, r.Config.Image, image.PullOptions{})
 	if err != nil {
-		log.Printf("Error pulling image %s: %v\n", d.Config.Image, err)
-		return DockerResult{Error: err}
+		log.Printf("Error pulling image %s: %v\n", r.Config.Image, err)
+		return RuntimeResult{Error: err}
 	}
 	io.Copy(os.Stdout, reader)
 
 	rp := container.RestartPolicy{
-		Name: container.RestartPolicyMode(d.Config.RestartPolicy),
+		Name: container.RestartPolicyMode(r.Config.RestartPolicy),
 	}
 
-	r := container.Resources{
-		Memory: d.Config.Memory,
+	resources := container.Resources{
+		Memory: r.Config.Memory,
 	}
 
 	cc := container.Config{
-		Image:        d.Config.Image,
+		Image:        r.Config.Image,
 		Tty:          false,
-		Env:          d.Config.Env,
-		ExposedPorts: d.Config.ExposedPorts,
+		Env:          r.Config.Env,
+		ExposedPorts: r.Config.ExposedPorts,
 	}
 
 	hc := container.HostConfig{
 		RestartPolicy:   rp,
-		Resources:       r,
+		Resources:       resources,
 		PublishAllPorts: true,
 	}
 
-	resp, err := d.Client.ContainerCreate(ctx, &cc, &hc, nil, nil, d.Config.Name)
+	resp, err := r.Client.ContainerCreate(ctx, &cc, &hc, nil, nil, r.Config.Name)
 	if err != nil {
-		log.Printf("Error creating container using image %s: %v\n", d.Config.Image, err)
-		return DockerResult{Error: err}
+		log.Printf("Error creating container using image %s: %v\n", r.Config.Image, err)
+		return RuntimeResult{Error: err}
 	}
 
-	if err = d.Client.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
+	if err = r.Client.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 		log.Printf("Error starting container %s: %v\n", resp.ID, err)
-		return DockerResult{Error: err}
+		return RuntimeResult{Error: err}
 	}
 
-	out, err := d.Client.ContainerLogs(ctx, resp.ID, container.LogsOptions{ShowStdout: true, ShowStderr: true})
+	out, err := r.Client.ContainerLogs(ctx, resp.ID, container.LogsOptions{ShowStdout: true, ShowStderr: true})
 	if err != nil {
 		log.Printf("Error getting logs for container %s: %v\n", resp.ID, err)
-		return DockerResult{Error: err}
+		return RuntimeResult{Error: err}
 	}
 
 	stdcopy.StdCopy(os.Stdout, os.Stderr, out)
 
-	return DockerResult{ContainerId: resp.ID, Action: "start", Result: "success"}
+	return RuntimeResult{ContainerId: resp.ID, Action: "start", Result: "success"}
 }
 
-func (d *Docker) Stop(id string) DockerResult {
+func (r *Runtime) Stop(id string) RuntimeResult {
 	log.Printf("Attempting to stop container %v", id)
 	ctx := context.Background()
-	err := d.Client.ContainerStop(ctx, id, container.StopOptions{})
+	err := r.Client.ContainerStop(ctx, id, container.StopOptions{})
 	if err != nil {
 		log.Printf("Error stopping container %s: %v\n", id, err)
-		return DockerResult{Error: err}
+		return RuntimeResult{Error: err}
 	}
 
-	err = d.Client.ContainerRemove(ctx, id, container.RemoveOptions{
+	err = r.Client.ContainerRemove(ctx, id, container.RemoveOptions{
 		RemoveVolumes: true,
 		RemoveLinks:   false,
 		Force:         false,
 	})
 	if err != nil {
 		log.Printf("Error removing container %s: %v\n", id, err)
-		return DockerResult{Error: err}
+		return RuntimeResult{Error: err}
 	}
 
-	return DockerResult{Action: "stop", Result: "success", Error: nil}
+	return RuntimeResult{Action: "stop", Result: "success", Error: nil}
 }
 
-func (d *Docker) Remove(containerId string) DockerResult {
+func (r *Runtime) Remove(containerId string) RuntimeResult {
 	ctx := context.Background()
 
-	err := d.Client.ContainerRemove(ctx, containerId, container.RemoveOptions{})
+	err := r.Client.ContainerRemove(ctx, containerId, container.RemoveOptions{})
 	if err != nil {
 		log.Printf("Error removing container %s: %v\n", containerId, err)
-		return DockerResult{Error: err}
+		return RuntimeResult{Error: err}
 	}
 
 	log.Printf("Container %s removed successfully\n", containerId)
-	return DockerResult{
+	return RuntimeResult{
 		Action:      "remove",
 		ContainerId: containerId,
 		Result:      "success",
 	}
 }
 
-// NewConfig creates a Docker configuration from a task
+// NewConfig creates a runtime configuration from a task
 // This bridges Chapter 4's pattern with our modern implementation
 func NewConfig(t interface{}) *Config {
 	// Handle both *task.Task and task.Task
@@ -183,20 +183,22 @@ func NewConfig(t interface{}) *Config {
 		AttachStderr:  true,
 		Env:           []string{},
 	}
-} // NewDocker creates a new Docker client with the given configuration
+}
+
+// NewRuntime creates a new runtime client with the given configuration
 // This matches Chapter 4's pattern while using our modern Docker client
-func NewDocker(c *Config) *Docker {
+func NewRuntime(c *Config) *Runtime {
 	dc, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		log.Printf("Error creating Docker client: %v", err)
 		// Return nil client - calling code should check for errors
-		return &Docker{
+		return &Runtime{
 			Client: nil,
 			Config: *c,
 		}
 	}
 
-	return &Docker{
+	return &Runtime{
 		Client: dc,
 		Config: *c,
 	}
