@@ -18,6 +18,12 @@ type Worker struct {
 	TaskCount int
 }
 
+// AddTask adds a task to the worker's queue for processing
+// This is the entry point for Chapter 4's task workflow
+func (w *Worker) AddTask(t task.Task) {
+	w.Queue.Enqueue(t)
+}
+
 func (w *Worker) CollectStats() {
 	fmt.Println("I will collect stats")
 }
