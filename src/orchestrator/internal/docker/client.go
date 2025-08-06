@@ -131,3 +131,46 @@ func (d *Docker) Remove(containerId string) DockerResult {
 		Result:      "success",
 	}
 }
+
+// NewConfig creates a Docker configuration from a task
+// This bridges Chapter 4's pattern with our modern implementation
+func NewConfig(t interface{}) *Config {
+	// For now, we'll use a simple approach that can handle different task types
+	// This will be properly integrated with task.Task in the next step
+
+	// Create a default config that works for Chapter 4 examples
+	config := &Config{
+		Name:          "test-container",
+		Image:         "strm/helloworld-http",
+		RestartPolicy: "no",
+		ExposedPorts:  make(nat.PortSet),
+		AttachStdin:   false,
+		AttachStdout:  true,
+		AttachStderr:  true,
+		Env:           []string{},
+	}
+
+	// TODO: In the next step, we'll add proper task.Task integration here
+	// This placeholder allows Chapter 4 patterns to work immediately
+
+	return config
+}
+
+// NewDocker creates a new Docker client with the given configuration
+// This matches Chapter 4's pattern while using our modern Docker client
+func NewDocker(c *Config) *Docker {
+	dc, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		log.Printf("Error creating Docker client: %v", err)
+		// Return nil client - calling code should check for errors
+		return &Docker{
+			Client: nil,
+			Config: *c,
+		}
+	}
+
+	return &Docker{
+		Client: dc,
+		Config: *c,
+	}
+}
