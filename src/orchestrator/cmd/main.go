@@ -99,7 +99,7 @@ func main() {
 	} else {
 		fmt.Printf("Task processed successfully, container: %s\n", result.ContainerId)
 	}
-	fmt.Println("=== Chapter 4 Worker Demo Complete ===\n")
+	fmt.Println("=== Chapter 4 Worker Demo Complete ===")
 
 	m := manager.Manager{
 		Pending: *queue.New(),
