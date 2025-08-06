@@ -36,24 +36,6 @@ func GetAllowedStates(currentState State) []State {
 	return stateTransitionMap[currentState]
 }
 
-// StateToString converts a State to its string representation for logging/debugging
-func StateToString(state State) string {
-	switch state {
-	case Pending:
-		return "Pending"
-	case Scheduled:
-		return "Scheduled"
-	case Running:
-		return "Running"
-	case Completed:
-		return "Completed"
-	case Failed:
-		return "Failed"
-	default:
-		return "Unknown"
-	}
-}
-
 // TransitionTaskState safely transitions a task to a new state with validation
 func (t *Task) TransitionState(newState State) error {
 	if ValidateStateTransition(t.State, newState) {
