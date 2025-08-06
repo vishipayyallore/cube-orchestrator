@@ -3,18 +3,18 @@
 package main
 
 import (
-	"cubeorchestrator/internal/manager"
-	"cubeorchestrator/internal/node"
-	"cubeorchestrator/internal/runtime"
-	"cubeorchestrator/internal/task"
-	"cubeorchestrator/internal/worker"
-
 	"fmt"
 	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
+
+	"cubeorchestrator/internal/manager"
+	"cubeorchestrator/internal/node"
+	"cubeorchestrator/internal/runtime"
+	"cubeorchestrator/internal/task"
+	"cubeorchestrator/internal/worker"
 )
 
 func main() {
@@ -99,7 +99,7 @@ func main() {
 	} else {
 		fmt.Printf("Task processed successfully, container: %s\n", result.ContainerId)
 	}
-	fmt.Println("=== Chapter 4 Worker Demo Complete ===\n")
+	fmt.Println("=== Chapter 4 Worker Demo Complete ===")
 
 	m := manager.Manager{
 		Pending: *queue.New(),
