@@ -16,15 +16,15 @@ Follow this numbered sequence for the best learning experience:
 
 ### 🏗️ Development & Implementation (06-09)
 
-6. **[06_api-architecture.md](06_api-architecture.md)** - API design patterns and structure
-7. **[07_pkg-directory-plan.md](07_pkg-directory-plan.md)** - Future API package planning
-8. **[08_docker-images-reference.md](08_docker-images-reference.md)** - Container images used in the project
-9. **[09_docker-commands.md](09_docker-commands.md)** - Docker commands and container management
+1. **[06_api-architecture.md](06_api-architecture.md)** - API design patterns and structure
+2. **[07_pkg-directory-plan.md](07_pkg-directory-plan.md)** - Future API package planning
+3. **[08_docker-images-reference.md](08_docker-images-reference.md)** - Container images used in the project
+4. **[09_docker-commands.md](09_docker-commands.md)** - Docker commands and container management
 
 ### 📊 Data & Infrastructure (10-11)
 
-10. **[10_postgresql-primer.md](10_postgresql-primer.md)** - Database setup and management
-11. **[11_troubleshooting.md](11_troubleshooting.md)** - Common issues and solutions
+1. **[10_postgresql-primer.md](10_postgresql-primer.md)** - Database setup and management
+2. **[11_troubleshooting.md](11_troubleshooting.md)** - Common issues and solutions
 
 ## 🎯 Quick Navigation
 
