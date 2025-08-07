@@ -1,4 +1,8 @@
-# Docker Images Reference
+# 08 - Docker Images Reference
+
+> **📍 You are here:** Development & Implementation → **Docker Images Reference**  
+> **⬅️ Previous:** [07 - Package Directory Plan](07_pkg-directory-plan.md) | **⏭️ Next:** [09 - Docker Commands](09_docker-commands.md)  
+> **🏠 Documentation Index:** [00_README.md](00_README.md)
 
 This document provides detailed information about the Docker images used in the cube-orchestrator project, their purposes, and how they're integrated into the orchestration workflow.
 
@@ -226,4 +230,21 @@ docker stats <container-id>
 
 ---
 
-*This documentation is part of the cube-orchestrator learning project. For more information about the overall architecture, see [project-overview.md](project-overview.md).*
+## 📖 What's Next?
+
+Continue your journey with the next document in the series:
+
+**[09 - Docker Commands](09_docker-commands.md)** - Docker commands and container management
+
+### 🗺️ Development & Implementation Path
+
+1. [06 - API Architecture](06_api-architecture.md)
+2. [07 - Package Directory Plan](07_pkg-directory-plan.md)
+3. **[08 - Docker Images Reference](08_docker-images-reference.md)** ← You are here
+4. [09 - Docker Commands](09_docker-commands.md)
+
+*For the complete documentation index, see [00_README.md](00_README.md)*
+
+---
+
+*This documentation is part of the cube-orchestrator learning project. For more information about the overall architecture, see [01_project-overview.md](01_project-overview.md).*
