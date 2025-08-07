@@ -1,4 +1,8 @@
-# Cube Orchestrator - Complete Project Overview
+# 01 - Cube Orchestrator: Complete Project Overview
+
+> **📍 You are here:** Getting Started → **Project Overview**  
+> **⏭️ Next:** [02 - Project Structure](02_project-structure.md)  
+> **🏠 Documentation Index:** [00_README.md](00_README.md)
 
 This document provides a high-level overview of the complete cube-orchestrator project structure and its components.
 
@@ -174,3 +178,21 @@ This project follows the Manning Publications book:
 - ✅ Comprehensive testing framework
 
 This project serves as both a learning exercise and a foundation for production-grade container orchestration systems! 🚀
+
+---
+
+## 📖 What's Next?
+
+Continue your journey with the next document in the series:
+
+**[02 - Project Structure](02_project-structure.md)** - Detailed directory structure and organization
+
+### 🗺️ Full Learning Path
+
+1. **[01 - Project Overview](01_project-overview.md)** ← You are here
+2. [02 - Project Structure](02_project-structure.md)
+3. [03 - Configuration Verification](03_configuration-verification.md)
+4. [04 - Go Project Layout](04_go-project-layout.md)
+5. [05 - Build System](05_build-system.md)
+
+*For the complete documentation index, see [00_README.md](00_README.md)*
