@@ -141,7 +141,7 @@ type Task struct {
 
 ### Runtime Integration
 
-The `runtime.DockerRuntime` component handles:
+The `runtime.DockerWrapper` component handles:
 
 - Image pulling and caching
 - Container creation with specified image

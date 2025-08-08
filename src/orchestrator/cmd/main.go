@@ -136,7 +136,7 @@ func main() {
 	}
 }
 
-func createContainer() (*runtime.DockerRuntime, *runtime.RuntimeResult) {
+func createContainer() (*runtime.DockerWrapper, *runtime.RuntimeResult) {
 	c := runtime.Config{
 		Name:  fmt.Sprintf("postgres-container-%s", uuid.New().String()[:8]), // Unique name
 		Image: "postgres:13",
@@ -147,7 +147,7 @@ func createContainer() (*runtime.DockerRuntime, *runtime.RuntimeResult) {
 	}
 
 	dc, _ := client.NewClientWithOpts(client.FromEnv)
-	r := runtime.DockerRuntime{
+	r := runtime.DockerWrapper{
 		Client: dc,
 		Config: c,
 	}
@@ -162,7 +162,7 @@ func createContainer() (*runtime.DockerRuntime, *runtime.RuntimeResult) {
 	return &r, &result
 }
 
-func stopContainer(r *runtime.DockerRuntime, id string) *runtime.RuntimeResult {
+func stopContainer(r *runtime.DockerWrapper, id string) *runtime.RuntimeResult {
 	result := r.Stop(id)
 	if result.Error != nil {
 		fmt.Printf("%v\n", result.Error)
