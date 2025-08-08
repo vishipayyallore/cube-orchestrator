@@ -67,6 +67,7 @@ cube-orchestrator/
 ## Current Implementation Status
 
 The project currently includes:
+
 - **Task Management**: Task and TaskEvent structures with states (Pending, Scheduled, Running, Completed, Failed)
 - **Docker Integration**: Dedicated Docker package with client abstraction for container management
 - **Worker Implementation**: Worker nodes with task queues, databases, and lifecycle management
@@ -80,6 +81,7 @@ The project currently includes:
 ## Architecture Evolution
 
 The project follows Go standard project layout:
+
 - `cmd/`: Application entry points and main packages
 - `internal/`: Private packages not intended for external use
 - `pkg/`: Public API packages (planned for future external consumption)
@@ -102,19 +104,29 @@ The project follows Go standard project layout:
 ## Coding Guidelines
 
 ### Go Standards
+
 - Follow standard Go conventions and idioms
 - Use `gofmt` for code formatting
 - Write clear, descriptive variable and function names
 - Include appropriate error handling
 - Add meaningful comments for complex logic
+- **File Headers**: Always include a file path comment at the top of Go files using the format:
+
+  ```go
+  // File: src/orchestrator/internal/package/filename.go
+
+  package packagename
+  ```
 
 ### Architecture Principles
+
 - Design for modularity and testability
 - Implement clear separation of concerns
 - Use interfaces to define contracts between components
 - Keep functions focused and single-purpose
 
 ### Orchestrator-Specific Patterns
+
 - Follow event-driven architecture where appropriate
 - Implement proper state management for tasks and workers (Pending, Scheduled, Running, Completed, Failed states)
 - Use goroutines and channels for concurrent operations
@@ -127,6 +139,7 @@ The project follows Go standard project layout:
 - Follow internal/ vs pkg/ package organization for API development
 
 ### Code Organization
+
 - Place private functionality in `internal/` packages
 - Reserve `pkg/` for future public APIs
 - Use descriptive package names that reflect their purpose
@@ -135,6 +148,7 @@ The project follows Go standard project layout:
 - Follow established patterns for Docker abstraction and container lifecycle management
 
 ### Documentation
+
 - Include package-level documentation
 - Document exported functions and types
 - Provide examples for complex APIs
@@ -156,6 +170,7 @@ The project follows Go standard project layout:
 ## Learning Focus Areas
 
 When suggesting code or improvements, consider these key learning objectives:
+
 - Understanding container runtime interfaces
 - Implementing scheduling algorithms based on resource availability
 - Managing cluster state and health monitoring
