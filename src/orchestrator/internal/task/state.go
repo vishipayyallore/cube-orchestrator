@@ -1,3 +1,5 @@
+// File: src/orchestrator/internal/task/state.go
+
 package task
 
 // State represents the current state of a task in the orchestration lifecycle

@@ -1,4 +1,4 @@
-// File: src/task/state_machine.go
+// File: src/orchestrator/internal/task/state_machine.go
 
 package task
 

@@ -1,4 +1,4 @@
-// File: src/scheduler/scheduler.go
+// File: src/orchestrator/internal/scheduler/scheduler.go
 
 package scheduler
 
