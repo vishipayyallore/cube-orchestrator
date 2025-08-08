@@ -1,4 +1,4 @@
-// File: src/node/node.go
+// File: src/orchestrator/internal/node/node.go
 
 package node
 
