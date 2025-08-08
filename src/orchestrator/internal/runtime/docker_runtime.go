@@ -1,4 +1,4 @@
-// File: src/orchestrator/internal/runtime/client.go
+// File: src/orchestrator/internal/runtime/docker_runtime.go
 
 package runtime
 
@@ -32,7 +32,7 @@ type Config struct {
 	RestartPolicy string
 }
 
-type Runtime struct {
+type DockerRuntime struct {
 	Client *client.Client
 	Config Config
 }
@@ -44,7 +44,7 @@ type RuntimeResult struct {
 	Result      string
 }
 
-func (r *Runtime) Run() RuntimeResult {
+func (r *DockerRuntime) Run() RuntimeResult {
 	ctx := context.Background()
 	reader, err := r.Client.ImagePull(
 		ctx, r.Config.Image, image.PullOptions{})
@@ -97,7 +97,7 @@ func (r *Runtime) Run() RuntimeResult {
 	return RuntimeResult{ContainerId: resp.ID, Action: "start", Result: "success"}
 }
 
-func (r *Runtime) Stop(id string) RuntimeResult {
+func (r *DockerRuntime) Stop(id string) RuntimeResult {
 	log.Printf("Attempting to stop container %v", id)
 	ctx := context.Background()
 	err := r.Client.ContainerStop(ctx, id, container.StopOptions{})
@@ -119,7 +119,7 @@ func (r *Runtime) Stop(id string) RuntimeResult {
 	return RuntimeResult{Action: "stop", Result: "success", Error: nil}
 }
 
-func (r *Runtime) Remove(containerId string) RuntimeResult {
+func (r *DockerRuntime) Remove(containerId string) RuntimeResult {
 	ctx := context.Background()
 
 	err := r.Client.ContainerRemove(ctx, containerId, container.RemoveOptions{})
@@ -190,18 +190,18 @@ func NewConfig(t interface{}) *Config {
 
 // NewRuntime creates a new runtime client with the given configuration
 // This matches Chapter 4's pattern while using our modern Docker client
-func NewRuntime(c *Config) *Runtime {
+func NewRuntime(c *Config) *DockerRuntime {
 	dc, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		log.Printf("Error creating Docker client: %v", err)
 		// Return nil client - calling code should check for errors
-		return &Runtime{
+		return &DockerRuntime{
 			Client: nil,
 			Config: *c,
 		}
 	}
 
-	return &Runtime{
+	return &DockerRuntime{
 		Client: dc,
 		Config: *c,
 	}
