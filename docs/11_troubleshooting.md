@@ -42,69 +42,26 @@ but was required as: github.com/docker/docker/client
 
 ### Root Cause
 
-The Docker client library has been reorganized. The `github.com/docker/docker/client` package now points to `github.com/moby/moby/client` internally, causing module path conflicts.
+Historically, the Docker client library organization caused path confusion between `github.com/docker/docker` and `github.com/moby/moby`. This project uses the official `github.com/docker/docker` SDK at v28.x and does not depend on `github.com/moby/moby` directly.
 
 ### Solutions
 
-#### Solution 1: Remove Docker Client Imports (Recommended for early chapters)
+#### Preferred: Use official Docker SDK v28.x (current project setup)
 
-If you're following the book and don't immediately need Docker client functionality:
-
-1. **Remove the import**:
-
-   ```go
-   // Remove this line from task.go
-   "github.com/docker/docker/client"
-   ```
-
-2. **Update structs**:
-
-   ```go
-   // Change this:
-   type Docker struct {
-       Client *client.Client
-       Config Config
-   }
-   
-   // To this:
-   type Docker struct {
-       Config Config
-   }
-   ```
-
-3. **Clean up dependencies**:
-
-   ```bash
-   go clean -modcache
-   go mod tidy
-   ```
-
-#### Solution 2: Use Moby Client
-
-If you need Docker client functionality immediately:
-
-1. **Install Moby client**:
-
-   ```bash
-   go get github.com/moby/moby/client
-   ```
-
-2. **Update imports**:
-
-   ```go
-   import (
-       "github.com/moby/moby/client"
-       // ... other imports
-   )
-   ```
-
-#### Solution 3: Use Docker SDK
-
-Use an alternative Docker SDK that doesn't have module conflicts:
+The repo is already configured to use the official Docker SDK:
 
 ```bash
-go get github.com/docker/docker@v20.10.21+incompatible
+go get github.com/docker/docker@v28.3.3+incompatible
 ```
+
+Notes:
+
+- Some package names changed in v28 (e.g., `image.PullOptions`, `container.StartOptions`).
+- The `stdcopy` import should be `github.com/docker/docker/pkg/stdcopy`.
+
+#### Optional (early chapters without Docker): Remove Docker client usage
+
+If you are experimenting with non-Docker chapters, you can remove Docker client usage temporarily and run `go mod tidy` to simplify dependencies.
 
 ### Verification
 
@@ -115,8 +72,8 @@ After applying any solution, verify the fix:
 go clean -modcache
 go mod tidy
 
-# Test compilation
-cd src
+# Test compilation (from workspace root)
+cd src/orchestrator/cmd
 go run main.go
 ```
 
@@ -154,13 +111,13 @@ Import paths don't match the actual module structure.
    module cubeorchestrator
    ```
 
-2. **Update imports accordingly**:
+2. **Update imports accordingly** (no `src/` in import paths; use module path + package):
 
    ```go
    import (
-       "cubeorchestrator/src/task"
-       "cubeorchestrator/src/worker"
-       // etc.
+      "cubeorchestrator/internal/task"
+      "cubeorchestrator/internal/worker"
+      "cubeorchestrator/internal/runtime"
    )
    ```
 
@@ -201,8 +158,8 @@ Code compiles but fails at runtime.
 1. **Check working directory**:
 
    ```bash
-   # Make sure you're in the right directory
-   cd /workspaces/cube-orchestrator/src
+   # From workspace root
+   cd src/orchestrator/cmd
    go run main.go
    ```
 
@@ -219,6 +176,27 @@ Code compiles but fails at runtime.
    go mod verify
    go mod download
    ```
+
+   ## Docker Daemon Availability
+
+   ### Symptom
+
+   - Docker-based demos are skipped with a message like: "Docker unavailable: REASON".
+
+   ### Root Causes
+
+   - Docker Desktop/daemon not running
+   - Insufficient permissions to access the Docker socket
+   - Windows named pipe not reachable: `\\.\pipe\docker_engine`
+
+   ### Fixes
+
+   - Start Docker Desktop (Windows/macOS) or the Docker service (Linux)
+   - On Windows, verify the named pipe exists and your user has access
+   - If using WSL2, ensure integration is enabled for your distribution
+   - Re-run from an elevated shell if required (or adjust group membership on Linux)
+
+   The code uses a pre-flight `DockerAvailable()` check to avoid noisy failures and will continue the rest of the demo when Docker isn't accessible.
 
 ## VS Code and gopls Issues
 

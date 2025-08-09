@@ -33,7 +33,7 @@ The `strm/helloworld-http` image is a minimal Docker image that runs a simple HT
 
 **Usage in cube-orchestrator**:
 
-1. **Worker Task Processing Demo** (`main.go:89`):
+1. **Worker Task Processing Demo** (`src/orchestrator/cmd/main.go`):
 
    ```go
    testTask := task.Task{
@@ -44,9 +44,9 @@ The `strm/helloworld-http` image is a minimal Docker image that runs a simple HT
    }
    ```
 
-2. **Runtime Client Testing** (`internal/runtime/client.go:153`):
-   - Used as a test workload for container lifecycle management
-   - Demonstrates task scheduling, container creation, and state transitions
+2. **Runtime Client Testing** (`src/orchestrator/internal/runtime/docker_wrapper.go`):
+    - Used as a test workload for container lifecycle management
+    - Demonstrates task scheduling, container creation, and state transitions
 
 **Expected Behavior**:
 

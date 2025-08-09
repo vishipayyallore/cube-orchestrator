@@ -27,7 +27,7 @@ This document verifies that all scripts and VS Code configurations are properly 
 - **Working Directory**: `${workspaceFolder}/src/orchestrator/cmd`
 - **Pre-launch Task**: Build for Debugging
 
-### 4. Documentation (`docs/project-structure.md`)
+### 4. Documentation (`docs/02_project-structure.md`)
 
 - **Status**: ✅ Updated
 - **Structure**: Reflects cleaned `src/orchestrator/` and `src/frontend/` layout

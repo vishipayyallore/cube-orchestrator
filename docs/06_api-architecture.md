@@ -14,7 +14,7 @@ As we evolve from the current demo application to a production-ready orchestrato
 src/orchestrator/
 ├── cmd/main.go                     # Demo application
 ├── internal/                       # Private implementation
-│   ├── docker/client.go            # Docker client abstraction
+│   ├── runtime/docker_wrapper.go   # Docker runtime abstraction
 │   ├── manager/manager.go          # Manager component
 │   ├── worker/worker.go            # Worker component
 │   ├── task/                       # Task management
@@ -55,7 +55,7 @@ src/orchestrator/
 │   ├── manager/                    # Current manager implementation
 │   ├── task/                       # Current task implementation
 │   ├── node/                       # Current node implementation
-│   └── docker/                     # Docker runtime abstraction
+│   └── runtime/                    # Docker runtime abstraction
 ├── pkg/                            # Public API packages
 │   ├── client/                     # Client libraries for external use
 │   │   ├── worker/

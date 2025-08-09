@@ -136,6 +136,16 @@ Edit `scripts/cleanup-builds.sh` to:
 4. **Iterate**: Repeat as needed
 5. **Cleanup**: Periodically run `./scripts/cleanup-builds.sh`
 
+## 🧪 Docs Quality CI
+
+Documentation quality is enforced in CI:
+
+- Workflow: `.github/workflows/docs-quality.yml`
+- Lint config: `.markdownlint.json` at repo root
+- Link checker config: `lychee.toml` at repo root
+
+The workflow runs on PRs and pushes (main) that modify `docs/**` or `README.md`.
+
 ## 🛠️ Troubleshooting
 
 ### Build Fails
