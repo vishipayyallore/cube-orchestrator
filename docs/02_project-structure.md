@@ -6,11 +6,15 @@ This project follows the Standard Go Project Layout with support for future web 
 
 ```text
 /workspaces/cube-orchestrator/
+├── .markdownlint.json            # Markdown lint configuration (root)
+├── lychee.toml                   # Link checker configuration (root)
 ├── .copilot/                     # GitHub Copilot configuration
 │   └── settings.json             # Copilot project-specific settings
 ├── .git/                         # Git repository metadata
 ├── .github/                      # GitHub-specific configuration
-│   └── copilot-instructions.md   # Copilot context and guidelines
+│   ├── copilot-instructions.md   # Copilot context and guidelines
+│   └── workflows/                # GitHub Actions workflows
+│       └── docs-quality.yml      # Docs lint and link check (CI)
 ├── .gitignore                    # Git ignore patterns
 ├── .vscode/                      # VS Code workspace configuration
 │   ├── tasks.json                # Build and run tasks
@@ -39,7 +43,7 @@ This project follows the Standard Go Project Layout with support for future web 
     │   ├── cmd/                  # Application entry points
     │   │   └── main.go           # Main orchestrator application
     │   ├── internal/             # Private application code
-    │   │   ├── docker/           # Docker client abstraction and container operations
+    │   │   ├── runtime/          # Docker runtime abstraction and container operations
     │   │   ├── manager/          # Task management and coordination
     │   │   ├── worker/           # Worker node implementation
     │   │   ├── node/             # Node abstraction and resources

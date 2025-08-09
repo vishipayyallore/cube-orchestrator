@@ -19,11 +19,15 @@ cube-orchestrator/
 ├── .copilot/           # GitHub Copilot configuration
 │   └── settings.json   # Copilot settings for the project
 ├── .github/            # GitHub configuration
-│   └── copilot-instructions.md # Copilot context and guidelines
+│   ├── copilot-instructions.md # Copilot context and guidelines
+│   └── workflows/      # GitHub Actions workflows (CI)
+│       └── docs-quality.yml    # Docs lint + link check
 ├── .vscode/            # VS Code workspace configuration
 │   ├── launch.json     # Debug configurations
 │   ├── settings.json   # Workspace settings
 │   └── tasks.json      # Build and run tasks
+├── .markdownlint.json  # Markdown lint config (root)
+├── lychee.toml         # Link checker config (root)
 ├── builds/             # Build artifacts directory
 │   ├── cube-orchestrator-debug    # Debug build
 │   ├── cube-orchestrator_latest   # Latest timestamped build
@@ -31,16 +35,18 @@ cube-orchestrator/
 ├── chx/                # Chapter exercises and examples
 ├── docs/               # Comprehensive documentation suite
 │   ├── images/         # Documentation images and diagrams
-│   ├── api-architecture.md     # API design patterns and structure
-│   ├── build-system.md         # Build system documentation
-│   ├── configuration-verification.md # Environment setup verification
-│   ├── docker-commands.md      # Docker commands reference
-│   ├── go-project-layout.md    # Go project structure guidelines
-│   ├── pkg-directory-plan.md   # Future API package planning
-│   ├── postgresql-primer.md    # PostgreSQL guide
-│   ├── project-overview.md     # High-level project overview
-│   ├── project-structure.md    # Detailed structure documentation
-│   └── troubleshooting.md      # Common issues and solutions
+│   ├── 00_README.md                  # Docs index and reading order
+│   ├── 01_project-overview.md        # High-level project overview
+│   ├── 02_project-structure.md       # Detailed structure documentation
+│   ├── 03_configuration-verification.md # Environment setup verification
+│   ├── 04_go-project-layout.md       # Go project structure guidelines
+│   ├── 05_build-system.md            # Build system documentation
+│   ├── 06_api-architecture.md        # API design patterns and structure
+│   ├── 07_pkg-directory-plan.md      # Future API package planning
+│   ├── 08_docker-images-reference.md # Docker images used
+│   ├── 09_docker-commands.md         # Docker commands reference
+│   ├── 10_postgresql-primer.md       # PostgreSQL guide
+│   └── 11_troubleshooting.md         # Common issues and solutions
 ├── scripts/            # Build and utility scripts
 │   ├── build.sh        # Professional build script with timestamping
 │   └── cleanup-builds.sh # Build artifact cleanup utility
@@ -50,7 +56,7 @@ cube-orchestrator/
 │       ├── cmd/        # Application entry points
 │       │   └── main.go # Main application with orchestrator demo
 │       ├── internal/   # Private application packages
-│       │   ├── docker/     # Docker client abstraction
+│       │   ├── runtime/    # Docker runtime abstraction (DockerWrapper)
 │       │   ├── manager/    # Orchestrator manager component
 │       │   ├── node/       # Node management component
 │       │   ├── scheduler/  # Task scheduling component
@@ -97,9 +103,12 @@ The project follows Go standard project layout:
 - `github.com/docker/docker/client` - Docker client for container management (v28.3.3+incompatible)
 - `github.com/docker/docker/api/types/container` - Docker container API types
 - `github.com/docker/docker/api/types/image` - Docker image API types
+- `github.com/docker/docker/pkg/stdcopy` - Stream container logs (v28 path; no moby dependency)
 - Additional Docker, monitoring, and HTTP routing libraries for full orchestrator functionality
 
 **Security Note**: Uses Docker v28.3.3 to address GO-2023-1699, GO-2023-1700, and GO-2023-1701 vulnerabilities.
+
+Note on Docker SDK v28: some types were renamed (e.g., `image.PullOptions`, `container.StartOptions`). Use `github.com/docker/docker/pkg/stdcopy` for log copying.
 
 ## Coding Guidelines
 
@@ -153,6 +162,9 @@ The project follows Go standard project layout:
 - Document exported functions and types
 - Provide examples for complex APIs
 - Keep README and docs up to date
+- Follow numbered docs convention under `docs/`
+- CI enforces docs quality: markdownlint and link checks via `.github/workflows/docs-quality.yml`
+- Project-wide configs: `.markdownlint.json` and `lychee.toml` at repo root
 
 ## Development Environment
 

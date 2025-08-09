@@ -1,0 +1,20 @@
+# Lychee link checker configuration
+verbose = true
+no_progress = true
+max_retries = 2
+retry_wait_time = 2
+accept = [200, 206, 429]
+
+# Timeouts
+request_timeout = 20
+
+# Exclude patterns (examples)
+exclude = [
+  # Example flaky sites or local hosts
+  "https://localhost",
+  "http://localhost",
+  "https://127.0.0.1",
+  "http://127.0.0.1",
+  # GitHub issue links may rate-limit during CI
+  "https://github.com/.*/issues/.*"
+]
