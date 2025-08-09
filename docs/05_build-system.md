@@ -159,16 +159,15 @@ A minimal CI workflow builds the Go orchestrator and publishes a binary artifact
 
 Steps (high level):
 
-1. Checkout repository (`actions/checkout@v4`)
-2. Setup Go (`actions/setup-go@v5`)
- - go-version: `1.24.6` (from `src/orchestrator/go.mod` toolchain)
- - cache: enabled
- - cache-dependency-path: `src/orchestrator/go.sum`
-3. Download modules: `go mod download` (working dir: `src/orchestrator`)
-4. Build binary: `go build -v -o ../builds/cube-orchestrator_ci main.go` (working dir: `src/orchestrator/cmd`)
-5. Upload artifact (`actions/upload-artifact@v4`)
- - name: `cube-orchestrator_ci-linux-amd64`
- - path: `src/orchestrator/builds/cube-orchestrator_ci`
+1. Checkout repository (`actions/checkout@v4`).
+
+2. Setup Go (`actions/setup-go@v5`) with go-version `1.24.6` (from `src/orchestrator/go.mod` toolchain), cache enabled, and `cache-dependency-path` set to `src/orchestrator/go.sum`.
+
+3. Download modules: `go mod download` (working dir: `src/orchestrator`).
+
+4. Build binary: `go build -v -o ../builds/cube-orchestrator_ci main.go` (working dir: `src/orchestrator/cmd`).
+
+5. Upload artifact (`actions/upload-artifact@v4`) as `cube-orchestrator_ci-linux-amd64` from `src/orchestrator/builds/cube-orchestrator_ci`.
 
 Notes:
 

@@ -166,6 +166,32 @@ Note on Docker SDK v28: some types were renamed (e.g., `image.PullOptions`, `con
 - CI enforces docs quality: markdownlint and link checks via `.github/workflows/docs-quality.yml`
 - Project-wide configs: `.markdownlint.json` and `lychee.toml` at repo root
 
+#### Markdown/Docs style rules (markdownlint)
+
+Follow these rules to avoid common lint errors:
+
+- No hard tabs (MD010): use spaces only in Markdown files.
+- Blank lines around lists (MD032): add a blank line before and after any list block.
+- Unordered list indentation (MD007): do not indent top-level bullets; for nested bullets, indent by 2 spaces. Prefer flattening lists when possible.
+- Ordered list numbering (MD029): number items sequentially (1., 2., 3.) instead of repeating 1.
+- Headings start at left (MD023): headings must not be indented; include a blank line after headings.
+- Fenced code blocks: include a language hint when possible (e.g., `powershell`, `bash`, `go`).
+- Line length (MD013) is disabled in this repo; wrapping is optional.
+
+Local checks before committing:
+
+```powershell
+# From repo root
+npx --yes markdownlint-cli2 "README.md" "docs/**/*.md"
+
+# Link check with Lychee (via Docker)
+# Extract links only (does not validate)
+docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress --dump README.md docs/**/*.md
+
+# Validate links (recommended; matches CI behavior)
+docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress README.md docs/**/*.md
+```
+
 ## Development Environment
 
 - Target Go version: Latest stable
