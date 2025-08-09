@@ -177,26 +177,26 @@ Code compiles but fails at runtime.
    go mod download
    ```
 
-   ## Docker Daemon Availability
+## Docker Daemon Availability
 
-   ### Symptom
+### Symptom
 
-   - Docker-based demos are skipped with a message like: "Docker unavailable: REASON".
+- Docker-based demos are skipped with a message like: "Docker unavailable: REASON".
 
-   ### Root Causes
+### Root Causes
 
-   - Docker Desktop/daemon not running
-   - Insufficient permissions to access the Docker socket
-   - Windows named pipe not reachable: `\\.\pipe\docker_engine`
+- Docker Desktop/daemon not running
+- Insufficient permissions to access the Docker socket
+- Windows named pipe not reachable: `\\.\pipe\docker_engine`
 
-   ### Fixes
+### Fixes
 
-   - Start Docker Desktop (Windows/macOS) or the Docker service (Linux)
-   - On Windows, verify the named pipe exists and your user has access
-   - If using WSL2, ensure integration is enabled for your distribution
-   - Re-run from an elevated shell if required (or adjust group membership on Linux)
+- Start Docker Desktop (Windows/macOS) or the Docker service (Linux)
+- On Windows, verify the named pipe exists and your user has access
+- If using WSL2, ensure integration is enabled for your distribution
+- Re-run from an elevated shell if required (or adjust group membership on Linux)
 
-   The code uses a pre-flight `DockerAvailable()` check to avoid noisy failures and will continue the rest of the demo when Docker isn't accessible.
+The code uses a pre-flight `DockerAvailable()` check to avoid noisy failures and will continue the rest of the demo when Docker isn't accessible.
 
 ## VS Code and gopls Issues
 
