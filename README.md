@@ -121,3 +121,14 @@ For Docker commands and container management instructions, see [Docker Commands]
 If you encounter any issues with dependencies, imports, or compilation, see the [Troubleshooting Guide](docs/troubleshooting.md).
 
 ## Development
+
+### Docs quality checks (local)
+
+Run Markdown lint against README and all docs before opening a PR:
+
+```powershell
+# From repo root
+npx --yes markdownlint-cli2 "README.md" "docs/**/*.md"
+```
+
+This uses the repository's .markdownlint.json automatically.
