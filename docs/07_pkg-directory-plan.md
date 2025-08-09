@@ -240,9 +240,9 @@ This structure aligns with your current learning path:
 
 ## 📚 References
 
-- [Go Project Layout](../go-project-layout.md) - Current project structure documentation
-- [API Architecture](../api-architecture.md) - Detailed API design strategy
-- [Troubleshooting](../troubleshooting.md) - Common issues and solutions
+- [Go Project Layout](04_go-project-layout.md) - Current project structure documentation
+- [API Architecture](06_api-architecture.md) - Detailed API design strategy
+- [Troubleshooting](11_troubleshooting.md) - Common issues and solutions
 
 ---
 

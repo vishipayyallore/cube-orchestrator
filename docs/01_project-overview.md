@@ -102,14 +102,14 @@ cd src/orchestrator/cmd && go run main.go
 | Document | Purpose | Status |
 |----------|---------|--------|
 | [README.md](../README.md) | Project overview and setup | ✅ Complete |
-| [project-structure.md](project-structure.md) | Architecture documentation | ✅ Complete |
-| [go-project-layout.md](go-project-layout.md) | Go best practices guide | ✅ Complete |
-| [build-system.md](build-system.md) | Build process documentation | ✅ Complete |
-| [api-architecture.md](api-architecture.md) | API design and pkg/ vs internal/ strategy | ✅ Complete |
-| [docker-commands.md](docker-commands.md) | Docker reference commands | ✅ Complete |
-| [postgresql-primer.md](postgresql-primer.md) | Database setup guide | ✅ Complete |
-| [troubleshooting.md](troubleshooting.md) | Common issues and solutions | ✅ Complete |
-| [configuration-verification.md](configuration-verification.md) | Setup verification | ✅ Complete |
+| [02_project-structure.md](02_project-structure.md) | Architecture documentation | ✅ Complete |
+| [04_go-project-layout.md](04_go-project-layout.md) | Go best practices guide | ✅ Complete |
+| [05_build-system.md](05_build-system.md) | Build process documentation | ✅ Complete |
+| [06_api-architecture.md](06_api-architecture.md) | API design and pkg/ vs internal/ strategy | ✅ Complete |
+| [09_docker-commands.md](09_docker-commands.md) | Docker reference commands | ✅ Complete |
+| [10_postgresql-primer.md](10_postgresql-primer.md) | Database setup guide | ✅ Complete |
+| [11_troubleshooting.md](11_troubleshooting.md) | Common issues and solutions | ✅ Complete |
+| [03_configuration-verification.md](03_configuration-verification.md) | Setup verification | ✅ Complete |
 
 ## 🔧 Development Workflow
 
