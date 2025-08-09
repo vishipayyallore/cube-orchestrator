@@ -132,3 +132,11 @@ npx --yes markdownlint-cli2 "README.md" "docs/**/*.md"
 ```
 
 This uses the repository's .markdownlint.json automatically.
+
+### Link check (Lychee)
+
+Run a quick local link check using Lychee (via Docker):
+
+```powershell
+docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress --dump README.md docs/**/*.md
+```
