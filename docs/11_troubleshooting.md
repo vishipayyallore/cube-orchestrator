@@ -115,8 +115,8 @@ After applying any solution, verify the fix:
 go clean -modcache
 go mod tidy
 
-# Test compilation
-cd src
+# Test compilation (from workspace root)
+cd src/orchestrator/cmd
 go run main.go
 ```
 
@@ -219,6 +219,27 @@ Code compiles but fails at runtime.
    go mod verify
    go mod download
    ```
+
+   ## Docker Daemon Availability
+
+   ### Symptom
+
+   - Docker-based demos are skipped with a message like: "Docker unavailable: REASON".
+
+   ### Root Causes
+
+   - Docker Desktop/daemon not running
+   - Insufficient permissions to access the Docker socket
+   - Windows named pipe not reachable: `\\.\pipe\docker_engine`
+
+   ### Fixes
+
+   - Start Docker Desktop (Windows/macOS) or the Docker service (Linux)
+   - On Windows, verify the named pipe exists and your user has access
+   - If using WSL2, ensure integration is enabled for your distribution
+   - Re-run from an elevated shell if required (or adjust group membership on Linux)
+
+   The code uses a pre-flight `DockerAvailable()` check to avoid noisy failures and will continue the rest of the demo when Docker isn't accessible.
 
 ## VS Code and gopls Issues
 
