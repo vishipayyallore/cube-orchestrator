@@ -12,15 +12,18 @@ cube-orchestrator/
 │   └── copilot-instructions.md # Copilot context and guidelines
 ├── docs/               # Comprehensive documentation suite
 │   ├── images/         # Documentation images and diagrams
-│   ├── api-architecture.md     # API design patterns and structure
-│   ├── build-system.md         # Build system documentation
-│   ├── docker-commands.md      # Docker commands reference
-│   ├── go-project-layout.md    # Go project structure guidelines
-│   ├── pkg-directory-plan.md   # Future API package planning
-│   ├── postgresql-primer.md    # PostgreSQL guide
-│   ├── project-overview.md     # High-level project overview
-│   ├── project-structure.md    # Detailed structure documentation
-│   └── troubleshooting.md      # Common issues and solutions
+│   ├── 00_README.md                    # Docs index and reading order
+│   ├── 01_project-overview.md          # High-level project overview
+│   ├── 02_project-structure.md         # Detailed structure documentation
+│   ├── 03_configuration-verification.md# Environment setup verification
+│   ├── 04_go-project-layout.md         # Go project structure guidelines
+│   ├── 05_build-system.md              # Build system documentation
+│   ├── 06_api-architecture.md          # API design patterns and structure
+│   ├── 07_pkg-directory-plan.md        # Future API package planning
+│   ├── 08_docker-images-reference.md   # Docker images used
+│   ├── 09_docker-commands.md           # Docker commands reference
+│   ├── 10_postgresql-primer.md         # PostgreSQL guide
+│   └── 11_troubleshooting.md           # Common issues and solutions
 ├── scripts/            # Build and utility scripts
 │   ├── build.sh        # Professional build script with timestamping
 │   └── cleanup-builds.sh # Build artifact cleanup utility
@@ -28,7 +31,7 @@ cube-orchestrator/
 │   └── orchestrator/   # Main orchestrator application
 │       ├── cmd/main.go # Main application with orchestrator demo
 │       ├── internal/   # Private application packages
-│       │   ├── docker/     # Docker client abstraction
+│       │   ├── runtime/    # Docker runtime abstraction (DockerWrapper)
 │       │   ├── manager/    # Orchestrator manager component
 │       │   ├── worker/     # Worker node implementation
 │       │   ├── node/       # Node abstraction and resources
@@ -114,11 +117,11 @@ The application now includes Docker container management capabilities:
 
 ### Docker Setup
 
-For Docker commands and container management instructions, see [Docker Commands](docs/docker-commands.md).
+For Docker commands and container management instructions, see [Docker Commands](docs/09_docker-commands.md).
 
 ### Troubleshooting
 
-If you encounter any issues with dependencies, imports, or compilation, see the [Troubleshooting Guide](docs/troubleshooting.md).
+If you encounter any issues with dependencies, imports, or compilation, see the [Troubleshooting Guide](docs/11_troubleshooting.md).
 
 ## Development
 
@@ -138,5 +141,9 @@ This uses the repository's .markdownlint.json automatically.
 Run a quick local link check using Lychee (via Docker):
 
 ```powershell
+# Extract links only (does not validate)
 docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress --dump README.md docs/**/*.md
+
+# Validate links (recommended; matches CI behavior)
+docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress README.md docs/**/*.md
 ```
