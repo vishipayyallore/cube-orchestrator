@@ -1,13 +1,14 @@
 module cubeorchestrator
 
-go 1.24.5
+go 1.24
+
+toolchain go1.24.6
 
 require (
 	github.com/docker/docker v28.3.3+incompatible
 	github.com/docker/go-connections v0.5.0
 	github.com/golang-collections/collections v0.0.0-20130729185459-604e922904d3
 	github.com/google/uuid v1.6.0
-	github.com/moby/moby v20.10.6+incompatible
 )
 
 require (

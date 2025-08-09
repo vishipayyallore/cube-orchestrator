@@ -7,15 +7,39 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
+	"time"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/go-connections/nat"
-	"github.com/moby/moby/pkg/stdcopy"
 
 	"cubeorchestrator/internal/task"
 )
+
+// DockerAvailable checks whether the Docker daemon is reachable and returns
+// a friendly message if not. This helps callers avoid noisy low-level errors
+// and choose to skip Docker-dependent flows gracefully.
+func DockerAvailable() (bool, string) {
+	dc, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return false, "Docker client not configured. Start Docker Desktop and ensure environment is set."
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	if _, err := dc.Ping(ctx); err != nil {
+		// Provide a concise, actionable message—especially for Windows pipe errors
+		msg := "Docker daemon not reachable. Start Docker Desktop and ensure your shell has necessary permissions."
+		if strings.Contains(err.Error(), "pipe/docker_engine") {
+			msg = "Docker engine pipe not found. On Windows, start Docker Desktop and consider running the terminal as Administrator."
+		}
+		return false, msg
+	}
+	return true, ""
+}
 
 type Config struct {
 	Name          string

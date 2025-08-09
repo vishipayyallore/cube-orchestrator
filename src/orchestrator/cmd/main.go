@@ -73,39 +73,44 @@ func main() {
 
 	// Chapter 4 Worker Demo - Real task processing
 	fmt.Println("\n=== Chapter 4 Worker Task Processing Demo ===")
-	w := worker.Worker{
-		Name:  "worker-1",
-		Queue: *queue.New(),
-		Db:    make(map[uuid.UUID]*task.Task),
-	}
-	fmt.Printf("worker: %v\n", w)
-	w.CollectStats()
-
-	// Create a test task for Chapter 4 workflow
-	testTask := task.Task{
-		ID:    uuid.New(),
-		Name:  fmt.Sprintf("test-container-%s", uuid.New().String()[:8]), // Unique name
-		State: task.Scheduled,
-		Image: "strm/helloworld-http",
-	}
-
-	fmt.Printf("Adding task %s to worker queue\n", testTask.ID)
-	w.AddTask(testTask)
-
-	fmt.Println("Processing task via RunTask()...")
-	result := w.RunTask()
-	if result.Error != nil {
-		fmt.Printf("Error processing task: %v\n", result.Error)
+	if ok, reason := runtime.DockerAvailable(); !ok {
+		fmt.Printf("Skipping Docker demo: %s\n", reason)
 	} else {
-		fmt.Printf("Task processed successfully, container: %s\n", result.ContainerId)
-	}
-	fmt.Println("=== Chapter 4 Worker Demo Complete ===")
+		w := worker.Worker{
+			Name:  "worker-1",
+			Queue: *queue.New(),
+			Db:    make(map[uuid.UUID]*task.Task),
+		}
+		fmt.Printf("worker: %v\n", w)
+		w.CollectStats()
 
+		// Create a test task for Chapter 4 workflow
+		testTask := task.Task{
+			ID:    uuid.New(),
+			Name:  fmt.Sprintf("test-container-%s", uuid.New().String()[:8]), // Unique name
+			State: task.Scheduled,
+			Image: "strm/helloworld-http",
+		}
+
+		fmt.Printf("Adding task %s to worker queue\n", testTask.ID)
+		w.AddTask(testTask)
+
+		fmt.Println("Processing task via RunTask()...")
+		result := w.RunTask()
+		if result.Error != nil {
+			fmt.Printf("Task result: %s (reason: %v)\n", result.Result, result.Error)
+		} else {
+			fmt.Printf("Task processed successfully, container: %s\n", result.ContainerId)
+		}
+		fmt.Println("=== Chapter 4 Worker Demo Complete ===")
+	}
+
+	workerName := "worker-1"
 	m := manager.Manager{
 		Pending: *queue.New(),
 		TaskDb:  make(map[string][]*task.Task),
 		EventDb: make(map[string][]*task.TaskEvent),
-		Workers: []string{w.Name},
+		Workers: []string{workerName},
 	}
 
 	fmt.Printf("manager: %v\n", m)
@@ -125,14 +130,18 @@ func main() {
 	fmt.Printf("node: %v\n", n)
 
 	fmt.Printf("create a test container\n")
-	runtimeTask, createResult := createContainer()
-
-	if runtimeTask != nil && createResult != nil {
-		time.Sleep(time.Second * 5)
-		fmt.Printf("stopping container %s\n", createResult.ContainerId)
-		_ = stopContainer(runtimeTask, createResult.ContainerId)
+	if ok, reason := runtime.DockerAvailable(); !ok {
+		fmt.Printf("Skipping container creation: %s\n", reason)
 	} else {
-		fmt.Println("Skipping container stop due to creation failure")
+		runtimeTask, createResult := createContainer()
+
+		if runtimeTask != nil && createResult != nil {
+			time.Sleep(time.Second * 5)
+			fmt.Printf("stopping container %s\n", createResult.ContainerId)
+			_ = stopContainer(runtimeTask, createResult.ContainerId)
+		} else {
+			fmt.Println("Skipping container stop due to creation failure")
+		}
 	}
 }
 

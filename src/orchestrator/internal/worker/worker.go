@@ -81,6 +81,14 @@ func (w *Worker) StartTask(t task.Task) runtime.RuntimeResult {
 	config := runtime.NewConfig(&t)
 	r := runtime.NewRuntime(config)
 
+	// Graceful skip if Docker is not available
+	if ok, reason := runtime.DockerAvailable(); !ok {
+		msg := fmt.Errorf("skipping task %v: %s", t.ID, reason)
+		t.State = task.Failed
+		w.Db[t.ID] = &t
+		return runtime.RuntimeResult{Error: msg, Action: "start", Result: "skipped"}
+	}
+
 	// Check if runtime client was created successfully
 	if r.Client == nil {
 		err := errors.New("failed to create runtime client")
@@ -112,6 +120,11 @@ func (w *Worker) StopTask(t task.Task) runtime.RuntimeResult {
 	// Create runtime configuration for stopping
 	config := runtime.NewConfig(&t)
 	r := runtime.NewRuntime(config)
+
+	if ok, reason := runtime.DockerAvailable(); !ok {
+		msg := fmt.Errorf("skipping stop for task %v: %s", t.ID, reason)
+		return runtime.RuntimeResult{Error: msg, Action: "stop", Result: "skipped"}
+	}
 
 	// Check if runtime client was created successfully
 	if r.Client == nil {
