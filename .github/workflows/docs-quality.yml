@@ -3,14 +3,14 @@ name: Docs Quality
 on:
   pull_request:
     paths:
-      - 'docs/**'
-      - 'README.md'
-      - '.github/workflows/docs-quality.yml'
+      - "docs/**"
+      - "README.md"
+      - ".github/workflows/docs-quality.yml"
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'docs/**'
-      - 'README.md'
+      - "docs/**"
+      - "README.md"
 
 jobs:
   markdownlint:
