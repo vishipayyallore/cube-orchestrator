@@ -146,6 +146,36 @@ Documentation quality is enforced in CI:
 
 The workflow runs on PRs and pushes (main) that modify `docs/**` or `README.md`.
 
+## 🏗️ CI: Build Orchestrator
+
+A minimal CI workflow builds the Go orchestrator and publishes a binary artifact.
+
+- Workflow: `.github/workflows/build-orchestrator.yml`
+- Triggers:
+  - Push to `main` affecting `src/orchestrator/**`
+  - Pull requests touching `src/orchestrator/**`
+- Permissions: least privilege (`contents: read`)
+- Runner: `ubuntu-latest`
+
+Steps (high level):
+
+1. Checkout repository (`actions/checkout@v4`)
+2. Setup Go (`actions/setup-go@v5`)
+ - go-version: `1.24.6` (from `src/orchestrator/go.mod` toolchain)
+ - cache: enabled
+ - cache-dependency-path: `src/orchestrator/go.sum`
+3. Download modules: `go mod download` (working dir: `src/orchestrator`)
+4. Build binary: `go build -v -o ../builds/cube-orchestrator_ci main.go` (working dir: `src/orchestrator/cmd`)
+5. Upload artifact (`actions/upload-artifact@v4`)
+ - name: `cube-orchestrator_ci-linux-amd64`
+ - path: `src/orchestrator/builds/cube-orchestrator_ci`
+
+Notes:
+
+- The runner builds a Linux amd64 binary by default (suitable for downloading from the PR/Run page).
+- The workflow uses least-privilege token permissions and Go module caching for faster builds.
+- Future: add a separate frontend job (React) or a matrix if `src/frontend/` is introduced.
+
 ## 🛠️ Troubleshooting
 
 ### Build Fails
