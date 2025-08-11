@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Run docs lint and link checks before committing, similar to Husky-style hooks.
+# Skips if no docs files are staged.
+
+# Allow skipping via env vars
+if [[ "${SKIP_DOCS_LINT:-}" == "1" ]]; then
+  echo "[pre-commit] SKIP_DOCS_LINT=1 set; skipping docs lint."
+  SKIP_LINT=1
+else
+  SKIP_LINT=0
+fi
+
+if [[ "${SKIP_LINK_CHECK:-}" == "1" ]]; then
+  echo "[pre-commit] SKIP_LINK_CHECK=1 set; skipping link check."
+  SKIP_LINK=1
+else
+  SKIP_LINK=0
+fi
+
+CHANGED=$(git diff --cached --name-only)
+if ! echo "$CHANGED" | grep -E '^(README\.md|docs/)' >/dev/null; then
+  exit 0
+fi
+
+if [[ "$SKIP_LINT" -eq 0 ]]; then
+  if command -v npx >/dev/null 2>&1; then
+    echo "[pre-commit] Running markdownlint..."
+    npx --yes markdownlint-cli2 "README.md" "docs/**/*.md"
+  else
+    echo "[pre-commit] npx not found; skipping markdownlint (install Node.js to enable)." >&2
+  fi
+fi
+
+if [[ "$SKIP_LINK" -eq 0 ]]; then
+  if command -v docker >/dev/null 2>&1; then
+    echo "[pre-commit] Running Lychee link check..."
+    docker run --rm -w /input -v "$(pwd):/input" lycheeverse/lychee:latest --config lychee.toml --no-progress README.md docs/**/*.md
+  else
+    echo "[pre-commit] docker not found; skipping link check (install Docker to enable)." >&2
+  fi
+fi
+
+exit 0

@@ -27,6 +27,7 @@ jobs:
           go-version: "1.24.6"
           check-latest: true
           cache: true
+          cache-dependency-path: src/orchestrator/go.sum
 
       - name: Go version
         run: go version

@@ -147,3 +147,22 @@ docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config 
 # Validate links (recommended; matches CI behavior)
 docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress README.md docs/**/*.md
 ```
+
+### Optional: pre-commit hook for docs checks
+
+You can enable a Git pre-commit hook to run both checks automatically when committing changes to docs:
+
+```powershell
+# From repo root (one-time setup)
+git config core.hooksPath .githooks
+```
+
+Skip temporarily if needed:
+
+```powershell
+# Skip markdown lint once
+$env:SKIP_DOCS_LINT = '1'; git commit -m "skip docs lint once"; Remove-Item Env:SKIP_DOCS_LINT
+
+# Skip link check once
+$env:SKIP_LINK_CHECK = '1'; git commit -m "skip link check once"; Remove-Item Env:SKIP_LINK_CHECK
+```
