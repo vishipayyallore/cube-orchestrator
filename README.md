@@ -148,14 +148,18 @@ docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config 
 docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress README.md docs/**/*.md
 ```
 
-### Optional: pre-commit hook for docs checks
+### Optional: hooks for docs checks
 
-You can enable a Git pre-commit hook to run both checks automatically when committing changes to docs:
+Enable Git hooks in this repo (applies to both pre-commit and pre-push hooks):
 
 ```powershell
 # From repo root (one-time setup)
 git config core.hooksPath .githooks
 ```
+
+Pre-commit hook: runs on any commit that includes README/docs changes.
+
+Pre-push hook (lightweight, recommended): runs only when pushing to main and only if README/docs changed in the push range.
 
 Skip temporarily if needed:
 
@@ -165,4 +169,14 @@ $env:SKIP_DOCS_LINT = '1'; git commit -m "skip docs lint once"; Remove-Item Env:
 
 # Skip link check once
 $env:SKIP_LINK_CHECK = '1'; git commit -m "skip link check once"; Remove-Item Env:SKIP_LINK_CHECK
+```
+
+Skip on push instead (for the pre-push hook):
+
+```powershell
+# Skip markdown lint for the next push only
+$env:SKIP_DOCS_LINT = '1'; git push; Remove-Item Env:SKIP_DOCS_LINT
+
+# Skip link check for the next push only
+$env:SKIP_LINK_CHECK = '1'; git push; Remove-Item Env:SKIP_LINK_CHECK
 ```
