@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# Lightweight pre-push docs guard
+# - Runs only when pushing to the 'main' branch
+# - Runs only if README.md or files under docs/ changed in the push range
+# - Respects SKIP_DOCS_LINT and SKIP_LINK_CHECK env flags
+
+set -euo pipefail
+
+# Respect skip flags
+if [[ "${SKIP_DOCS_LINT:-}" == "1" ]]; then
+  echo "[pre-push] SKIP_DOCS_LINT set; skipping markdown lint."
+  SKIP_LINT=1
+else
+  SKIP_LINT=0
+fi
+
+if [[ "${SKIP_LINK_CHECK:-}" == "1" ]]; then
+  echo "[pre-push] SKIP_LINK_CHECK set; skipping link check."
+  SKIP_LINK=1
+else
+  SKIP_LINK=0
+fi
+
+run_checks=false
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Only consider pushes to main
+  branch_name="${local_ref##refs/heads/}"
+  if [[ "$branch_name" != "main" ]]; then
+    continue
+  fi
+
+  # Determine files changed between remote and local
+  changed_files=""
+  if [[ "$remote_sha" =~ ^0+$ ]]; then
+    # No remote history (new branch) – compare against the root
+    # Fallback: use the full diff of local branch
+    changed_files=$(git diff --name-only "$(git hash-object -t tree /dev/null)" "$local_sha" || true)
+  else
+    changed_files=$(git diff --name-only "$remote_sha" "$local_sha" || true)
+  fi
+
+  if echo "$changed_files" | grep -E -i '^(README\.md|docs/)' >/dev/null 2>&1; then
+    run_checks=true
+  fi
+done
+
+# If no docs changed or not pushing main, exit quietly
+if [[ "$run_checks" != "true" ]]; then
+  exit 0
+fi
+
+echo "[pre-push] Docs changed on main. Running checks..."
+
+# Markdown lint (if not skipped)
+if [[ "$SKIP_LINT" -eq 0 ]]; then
+  if command -v npx >/dev/null 2>&1; then
+    echo "[pre-push] Running markdownlint-cli2..."
+    npx --yes markdownlint-cli2 "README.md" "docs/**/*.md"
+  else
+    echo "[pre-push] npx not found; skipping markdown lint."
+  fi
+fi
+
+# Link check with Lychee via Docker (if not skipped)
+if [[ "$SKIP_LINK" -eq 0 ]]; then
+  if command -v docker >/dev/null 2>&1; then
+    echo "[pre-push] Running Lychee link checker..."
+    docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest \
+      --config lychee.toml --no-progress README.md docs/**/*.md
+  else
+    echo "[pre-push] Docker not found; skipping link check."
+  fi
+fi
+
+echo "[pre-push] Done.
