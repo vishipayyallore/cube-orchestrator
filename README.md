@@ -2,6 +2,41 @@
 
 🛠️ Learning to build an orchestrator in Go by following the book `Build an Orchestrator in Go (From Scratch)` from Manning Publications. Exploring concepts like process management, containers, and scheduling from the ground up.
 
+## Quick Start (TL;DR)
+
+```powershell
+# Clone and enter
+git clone https://github.com/<your-user>/cube-orchestrator.git
+cd cube-orchestrator
+
+# (Optional) Run timestamped build (uses scripts/build.sh – run via Git Bash / WSL on Windows)
+./scripts/build.sh
+
+# Run demo (gracefully skips Docker container demo if Docker not available)
+cd src/orchestrator
+go run ./cmd/main.go
+```
+
+```bash
+# Linux/macOS equivalent
+git clone https://github.com/<your-user>/cube-orchestrator.git
+cd cube-orchestrator
+./scripts/build.sh
+cd src/orchestrator
+go run ./cmd/main.go
+```
+
+Artifacts appear under `builds/` (e.g., `cube-orchestrator_YYYYMMDD_HHMMSS` and a `cube-orchestrator_latest` symlink/copy).
+
+## Prerequisites
+
+- Go toolchain: go1.24.6 (see `go.mod` – `toolchain go1.24.6`)
+- Git
+- (Optional) Docker Desktop / Engine for container demo pieces (the app detects absence and skips gracefully)
+- (Optional) Bash (for `scripts/build.sh` on Windows use Git Bash or WSL)
+
+## Repository Layout
+
 ## Project Structure
 
 ```text
@@ -15,7 +50,7 @@ cube-orchestrator/
 │   ├── 00_README.md                    # Docs index and reading order
 │   ├── 01_project-overview.md          # High-level project overview
 │   ├── 02_project-structure.md         # Detailed structure documentation
-│   ├── 03_configuration-verification.md# Environment setup verification
+│   ├── 03_configuration-verification.md # Environment setup verification
 │   ├── 04_go-project-layout.md         # Go project structure guidelines
 │   ├── 05_build-system.md              # Build system documentation
 │   ├── 06_api-architecture.md          # API design patterns and structure
@@ -107,13 +142,32 @@ cd src/orchestrator
 go run ./cmd/main.go
 ```
 
-![Cube Orchestrator Demo Output](docs/images/After_Ch_2.PNG)
+![After Chapter 2: Basic orchestrator demo output showing task lifecycle](docs/images/After_Ch_2.PNG)
 
 ### Docker Container Integration (Chapter 3)
 
 The application now includes Docker container management capabilities:
 
-![Chapter 3 - Docker Integration](docs/images/After_Ch_3.PNG)
+![After Chapter 3: Docker integration running container tasks](docs/images/After_Ch_3.PNG)
+
+### Architecture (Brief)
+
+High-level flow:
+
+```
+Task -> Scheduler -> Manager -> Worker -> Runtime(Docker) -> Container
+           ^                                   |
+           +-------------- State Events <------+
+```
+
+Key responsibilities:
+
+- Scheduler: picks suitable worker (future: resource-aware)
+- Manager: coordinates distribution & system state
+- Worker: executes tasks, updates state
+- Runtime: abstracts Docker (container lifecycle) and can be skipped
+
+<!-- (List moved above with proper blank lines for markdownlint) -->
 
 ### Docker Setup
 
@@ -141,16 +195,25 @@ This uses the repository's .markdownlint.json automatically.
 Run a quick local link check using Lychee (via Docker):
 
 ```powershell
+# PowerShell: use .Path to ensure correct volume path mapping
 # Extract links only (does not validate)
-docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress --dump README.md docs/**/*.md
+docker run --rm -w /input -v "${PWD}.Path:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress --dump README.md docs/**/*.md
 
 # Validate links (recommended; matches CI behavior)
+docker run --rm -w /input -v "${PWD}.Path:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress README.md docs/**/*.md
+```
+
+```bash
+# Bash / WSL / Linux / macOS
+docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress --dump README.md docs/**/*.md
 docker run --rm -w /input -v "${PWD}:/input" lycheeverse/lychee:latest --config lychee.toml --no-progress README.md docs/**/*.md
 ```
 
+> Note: Lychee needs outbound network access; behind a corporate proxy you may need Docker proxy settings.
+
 ### Optional: hooks for docs checks
 
-Enable Git hooks in this repo (applies to both pre-commit and pre-push hooks):
+Enable Git hooks in this repo (applies to both pre-commit and pre-push hooks). Hooks are opt‑in; they do not run unless you set `core.hooksPath`:
 
 ```powershell
 # From repo root (one-time setup)
@@ -180,3 +243,27 @@ $env:SKIP_DOCS_LINT = '1'; git push; Remove-Item Env:SKIP_DOCS_LINT
 # Skip link check for the next push only
 $env:SKIP_LINK_CHECK = '1'; git push; Remove-Item Env:SKIP_LINK_CHECK
 ```
+
+POSIX (bash) equivalents:
+
+```bash
+SKIP_DOCS_LINT=1 git commit -m "skip docs lint once"
+SKIP_LINK_CHECK=1 git commit -m "skip link check once"
+SKIP_DOCS_LINT=1 git push
+SKIP_LINK_CHECK=1 git push
+```
+
+### Build Script
+
+Timestamped builds:
+
+```bash
+./scripts/build.sh
+
+```
+
+Outputs go to `builds/` with a timestamped binary plus a `cube-orchestrator_latest` copy. Use the debug task in VS Code or `go build` for iterative dev.
+
+### License
+
+This project is distributed under the terms of the [LICENSE](LICENSE).
